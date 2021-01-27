@@ -1,11 +1,10 @@
-FROM python:3.8-slim
+FROM python:3.7-slim
 
 RUN apt update && apt install -y gcc make
 
 RUN python -m pip install --upgrade pip
 
 COPY ./docker/ /tmp
-RUN ls /tmp
 
 RUN pip install --no-cache-dir -r ./tmp/requirements.txt
 RUN python -c "import nltk; nltk.download('stopwords');"

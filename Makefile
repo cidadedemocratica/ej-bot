@@ -25,22 +25,23 @@ clean:
 	rm -rf *.egg-info
 	rm -rf docs/_build
 
-train: train-nlu train-core action-server
+# NLU
+train-nlu:
+	rasa train nlu -vv
+
+# CORE
+train-core:
+	rasa train -vv
 
 trainer:
 	docker build . -f docker/trainer.Dockerfile -t trainer:latest
 
-train-nlu:
-	python -m rasa_nlu.train -c nlu_config.yml --data data/intents/ -o models --fixed_model_name nlu --project current --verbose
-
-train-core:
-	python -m rasa_core.train -d domain.yml -s data/stories/ -o models/current/dialogue -c policies.yml
 
 run-api:
-	python -m rasa_core.run -d models/current/dialogue -u models/current/nlu --endpoints endpoints.yml --debug --enable_api
+	rasa run -m models/ -vv --endpoints endpoints.yml --enable-api --port 5055
 
 action-server:
-	python -m rasa_core_sdk.endpoint --actions actions.actions
+	rasa run actions --actions actions -vv
 
 visualize:
 	python -m rasa.core.visualize -s data/stories.md -d domain.yml -o story_graph.html
