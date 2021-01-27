@@ -1,0 +1,24 @@
+image: python:3.8-slim
+
+stages:
+  - style
+  - test
+
+style:
+  stage: test
+  before_script:
+    - pip install black
+  script:
+    - black --check .
+
+
+test:
+  before_script:
+    - apt update && apt install -y gcc make
+    - pip install -r docker/requirements-development.txt
+    - pip install pytest==3.5.1
+    - pip install rasa_nlu --upgrade
+    - pip install rasa_core --upgrade
+    - pip install rasa_core_sdk --upgrade
+  stage: test
+  script: python -m pytest tests

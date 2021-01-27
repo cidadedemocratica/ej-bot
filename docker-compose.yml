@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  rasa:
+    container_name: rasa
+    image: rasa/rasa:2.2.7
+    ports:
+      - 5005:5005
+    volumes:
+    - ./:/app
+    command:
+      - run
+      - --cors
+      - "*"
+      - --enable-api 
+      - --log-file
+      - out.log
+    depends_on:
+      - action-server
+      - trainer
+  action-server:
+    container_name: rasa-action-server
+    image: rasa/rasa-sdk
+    volumes:
+      - ./actions:/app/actions 
+    ports:
+      - 5055:5055
+    command: make run-api
+
+  trainer:
+    build:
+      context: .
+    command: make trainer
+    volumes:
+      - ./:/app
+    container_name: rasa-trainer
+    image: requirement:latest
