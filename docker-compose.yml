@@ -1,38 +1,39 @@
 version: '3'
 
 services:
-  rasa:
-    container_name: rasa
-    image: rasa/rasa:2.2.7
-    ports:
-      - 5005:5005
-    volumes:
-    - ./:/app
-    command:
-      - run
-      - --cors
-      - "*"
-      - --enable-api 
-      - --log-file
-      - out.log
-    depends_on:
-      - action-server
-      - trainer
-  action-server:
-    container_name: rasa-action-server
-    image: rasa/rasa-sdk
-    volumes:
-      - ./actions:/app/actions 
-    ports:
-      - 5055:5055
-    command: make action-server
-
-  trainer:
+  # =============================== Coach =================================
+  # All the models are trained by this coach.
+  coach:
     build:
       context: .
-      dockerfile: ./docker/trainer.Dockerfile
-    command: make trainer
+      dockerfile: ./docker/bot.Dockerfile
     volumes:
-      - ./:/app
-    container_name: rasa-trainer
-    image: trainer:latest
+      - ./bot/models/:/bot/models/
+    command: "make train"
+
+  # ================================= Bot =====================================
+  bot:
+    build:
+      context: .
+      dockerfile: ./docker/bot.Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./bot/:/bot/
+    ports:
+      - 5006:5006
+      - 5004:5004
+      - 5005:5005
+    depends_on:
+      - actions
+
+  # ================================= Actions =================================
+  # Rasa middleware used to connect with external APIs.
+  actions:
+    build:
+      context: .
+      dockerfile: ./docker/actions.Dockerfile
+    ports:
+      - 5055:5055
+    volumes:
+      - ./bot/actions:/bot/actions
+    command: sh -c "make actions"

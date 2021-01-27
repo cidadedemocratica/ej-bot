@@ -1,47 +1,63 @@
-
-.PHONY: clean train-nlu train-core cmdline server
-
-TEST_PATH=./tests
-
-help:
-	@echo "    clean"
-	@echo "        Remove python artifacts and build artifacts."
-	@echo "    train-nlu"
-	@echo "        Trains a new nlu model using the projects Rasa NLU config"
-	@echo "    train-core"
-	@echo "        Trains a new dialogue model using the story training data"
-	@echo "    action-server"
-	@echo "        Starts the server for custom action."
-	@echo "    run-api"
-	@echo "       This will load the assistant in your terminal for you to chat."
-
+current_dir := $(shell pwd)
+user := $(shell whoami)
 
 clean:
-	find . -name '*.pyc' -exec rm -f {} +
-	find . -name '*.pyo' -exec rm -f {} +
-	find . -name '*~' -exec rm -f  {} +
-	rm -rf build/
-	rm -rf dist/
-	rm -rf *.egg-info
-	rm -rf docs/_build
+	docker-compose down
+	cd bot/ && make clean
 
-# NLU
-train-nlu:
-	rasa train nlu -vv
+stop:
+	docker-compose stop
 
-# CORE
-train-core:
-	rasa train -vv
+############################## BOILERPLATE ##############################
+first-run:
+	make build
+	make train
+	make run-shell
 
-trainer:
-	docker build . -f docker/trainer.Dockerfile -t trainer:latest
+build:
+	make build-requirements
+	make build-coach
+	make build-bot
 
+build-requirements:
+	docker build . --no-cache -f docker/requirements.Dockerfile -t botrequirements
+
+build-bot:
+	docker-compose build --no-cache bot
+
+build-coach:
+	docker-compose build --no-cache coach
+
+
+run-shell:
+	docker-compose run --rm --service-ports bot make shell
 
 run-api:
-	rasa run -m models/ -vv --endpoints endpoints.yml --enable-api --port 5055
+	docker-compose run --rm --service-ports bot make api
 
-action-server:
-	rasa run actions --actions actions -vv
+run-actions:
+	docker-compose run --rm --service-ports bot make actions
+
+train:
+	mkdir -p bot/models
+	docker-compose up --build coach
+
+############################## TESTS ##############################
+test:
+	docker-compose run --rm bot make test
+
+run-test-nlu:
+	docker-compose run --rm bot make test-nlu
+
+run-test-core:
+	docker-compose run --rm bot make test-core
+
+validate:
+	docker-compose run --rm bot rasa data validate --domain domain.yml --data data/ -vv
 
 visualize:
-	python -m rasa.core.visualize -s data/stories.md -d domain.yml -o story_graph.html
+	docker-compose run --rm  -v $(current_dir)/bot:/coach coach rasa visualize --domain domain.yml --stories data/stories.md --config config.yml --nlu data/nlu.md --out ./graph.html -vv
+	$(info )
+	$(info Caso o FIREFOX não seja iniciado automáticamente, abra o seguinte arquivo com seu navegador:)
+	$(info bot/graph.html)
+	firefox bot/graph.html
