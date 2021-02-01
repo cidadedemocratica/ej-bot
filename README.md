@@ -1,10 +1,21 @@
+# EJ Bot
 
 
 
 
+# Primeiros passos
 
-# How to build first
+```
+make first-run
+```
 
-chmod +x base.sh
 
-./base.sh
+# Fluxo de trabalho
+
+# Rasa Boilerplate
+
+A estrutura desse projeto foi baseada na [documentação do rasa](https://rasa.com/docs/rasa/) e [também no boilerplate](https://github.com/lappis-unb/rasa-ptbr-boilerplate).
+
+
+# Executando testes
+

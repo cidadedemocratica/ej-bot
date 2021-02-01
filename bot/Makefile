@@ -37,8 +37,6 @@ shell:
 api:
 	rasa run -m models/ -vv --endpoints endpoints.yml --enable-api --port 5006
 
-
-
 # ACTIONS
 actions:
 	rasa run actions --actions actions -vv

@@ -1,3 +1,6 @@
-./bot/models/*
+./bot/models
 */__pycache__/
 .pytest_cache/
+*.pyc
+*.log
+models

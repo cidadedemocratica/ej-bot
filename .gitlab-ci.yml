@@ -16,9 +16,11 @@ test:
   before_script:
     - apt update && apt install -y gcc make
     - pip install -r docker/requirements-development.txt
-    - pip install pytest==3.5.1
     - pip install rasa_nlu --upgrade
     - pip install rasa_core --upgrade
     - pip install rasa_core_sdk --upgrade
+    - rasa train
   stage: test
-  script: python -m pytest tests
+  script: 
+    - rasa test nlu -u test/test_data.json --model models
+    - rasa test core --stories test/test_stories.md
