@@ -1,10 +1,14 @@
-image: python:3.7-slim
+image: docker:stable
+
+services:
+  - docker:dind
 
 stages:
   - style
   - test
 
 style:
+  image: python:3.7-alpine
   stage: test
   before_script:
     - pip install black
@@ -13,6 +17,7 @@ style:
 
 
 test:
+  image: python:3.7-alpine
   before_script:
     - apt update && apt install -y gcc make
     - make first-run
