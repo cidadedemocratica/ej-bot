@@ -1,4 +1,7 @@
-image: python:3.7-slim
+image: docker:stable
+
+services:
+  - docker:dind
 
 stages:
   - style
