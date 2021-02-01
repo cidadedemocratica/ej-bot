@@ -15,12 +15,9 @@ style:
 test:
   before_script:
     - apt update && apt install -y gcc make
-    - pip install -r docker/requirements-development.txt
-    - pip install rasa_nlu --upgrade
-    - pip install rasa_core --upgrade
-    - pip install rasa_core_sdk --upgrade
-    - rasa train
+    - make first-run
+    - make train
   stage: test
   script: 
-    - rasa test nlu -u test/test_data.json --model models
-    - rasa test core --stories test/test_stories.md
+    - make run-test-nlu
+    - make run-test-core

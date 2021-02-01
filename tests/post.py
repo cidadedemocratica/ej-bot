@@ -12,7 +12,6 @@ post_url = "http://localhost:5005/webhooks/rest/webhook"
 
 headers = {"content-type": "application/json"}
 
-
 params = {"message": "constante"}
 
 r = requests.post(post_url, data=json.dumps(params), headers=headers)
