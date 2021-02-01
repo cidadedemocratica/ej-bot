@@ -1,20 +1,27 @@
-image: python:3.7-slim
+image: docker:stable
+
+services:
+  - docker:dind
 
 stages:
   - style
   - test
 
 style:
-  stage: test
+  image: python:3.7-alpine
   before_script:
+    - apk add musl-dev gcc
     - pip install black
+  stage: test
   script:
     - black --check .
 
 
 test:
   before_script:
-    - apt update && apt install -y gcc make
+    - apk add gcc make
+    - apk add python python-dev py-pip build-base
+    - pip install docker-compose
     - make first-run
     - make train
   stage: test
