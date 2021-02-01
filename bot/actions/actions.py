@@ -4,9 +4,7 @@
 # See this guide on how to implement these action:
 # https://rasa.com/docs/rasa/custom-actions
 
-# This is a simple example for a custom action which utters "Hello World!"
 import requests
-from typing import Any, Text, Dict, List
 
 #
 from rasa_sdk import Action, Tracker
@@ -14,22 +12,24 @@ from rasa_sdk.executor import CollectingDispatcher
 
 #
 #
-class ActionHelloWorld(Action):
-    def name(self) -> Text:
-        return "action_hello_world"
-    def run(
-        self,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> List[Dict[Text, Any]]:
-        post_url = "http://localhost:8000/"
+class ActionRandomComment(Action):
+    def name(self):
+        return 'action_random_comment'
 
-        headers = {"content-type": "application/json"}
+    def run(self, dispatcher, tracker, domain):
+        # TODO: Add code to get comment from EJ server
+        comment = 'Comment text here'
+        dispatcher.utter_message(comment)
+        dispatcher.utter_message(template="utter_vote")
+        return []
 
-        params = {"message": "constante"}
+class ActionSendVote(Action):
+    def name(self):
+        return 'action_send_vote'
 
-        r = requests.post(post_url, data=json.dumps(params), headers=headers)
-        dispatcher.utter_message(text="Hello World!")
-
+    def run(self, dispatcher, tracker, domain):
+        # TODO: Add code to send request to EJ with vote value
+        vote = tracker.latest_message['intent'].get('name')
+        dispatcher.utter_message(vote)
+        dispatcher.utter_message(template="utter_vote_received")
         return []

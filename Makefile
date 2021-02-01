@@ -1,20 +1,23 @@
 current_dir := $(shell pwd)
 user := $(shell whoami)
 
-clean:
+help:
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+clean: ## Bring down the bot and cleans database and trained models
 	docker-compose down
 	cd bot/ && make clean
 
-stop:
+stop: ## Runs docker-compose stop commmand
 	docker-compose stop
 
 ############################## BOILERPLATE ##############################
-first-run:
+first-run: ## Build docker services, train models and put the bot to run on shell. Sucessful if by the end you can chat with the bot via terminal
 	make build
 	make train
 	make run-shell
 
-build:
+build: ## Build base requirements dockerfile and coach and bot services
 	make build-requirements
 	make build-coach
 	make build-bot
@@ -29,7 +32,7 @@ build-coach:
 	docker-compose build --no-cache coach
 
 
-run-shell:
+run-shell: ## Run bot in shell, sucessful when shows "Bot loaded. Type a message and press enter (use '/stop' to exit): "    
 	docker-compose run --rm --service-ports bot make shell
 
 run-api:

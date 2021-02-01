@@ -1,33 +1,29 @@
 version: "2.0"
 
 intents:
-  - greet
-  - goodbye
-  - affirm
-  - deny
-  - mood_great
-  - mood_unhappy
-  - bot_challenge
+  - agree
+  - disagree
+  - pass
+  - start
 
 responses:
-  utter_greet:
-  - text: "Hey! How are you?"
-
-  utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
-
-  utter_did_that_help:
-  - text: "Did that help you?"
-
-  utter_happy:
-  - text: "Great, carry on!"
-
+  utter_start:
+  - text: "Olá, gostaria de participar?"
   utter_goodbye:
-  - text: "Bye"
+  - text: "Sua participação foi computada! Até logo"
+  utter_vote:
+  - text: "Voto"
+    buttons:
+    - title: "Concordar"
+      payload: "/agree"
+    - title: "Discordar"
+      payload: "/disagree"
+    - title: "Pular"
+      payload: "/pass"
 
-  utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+actions:
+  - action_random_comment
+  - action_send_vote
 
 session_config:
   session_expiration_time: 60

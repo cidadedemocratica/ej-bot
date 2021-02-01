@@ -4,27 +4,27 @@ stories:
 
 - story: happy path
   steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_great
-  - action: utter_happy
+  - intent: start
+  - action: utter_start
+  - intent: agree
+  - action: action_random_comment
+  - intent: agree
+  - action: action_send_vote
 
-- story: sad path 1
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: affirm
-  - action: utter_happy
 
-- story: sad path 2
+- story: happy path 2
   steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - intent: deny
+  - intent: start
+  - action: utter_start
+  - intent: agree
+  - action: action_random_comment
+  - intent: disagree
+  - action: action_send_vote
+  - action: utter_goodbye
+
+- story: sad path
+  steps:
+  - intent: start
+  - action: utter_start
+  - intent: disagree
   - action: utter_goodbye
