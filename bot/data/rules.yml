@@ -1,3 +1,8 @@
 version: "2.0"
 
 rules:
+- rule: Activate form
+  steps:
+  - intent: start
+  - action: vote_form
+  - active_loop: vote_form

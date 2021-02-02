@@ -6,6 +6,18 @@ intents:
   - pass
   - start
 
+slots:
+  conversation_id:
+    type: float
+  vote:
+    type: text
+  number_comments:
+    type: float
+  number_voted_comments:
+    type: float
+  current_comment_id:
+    type: float
+
 responses:
   utter_start:
   - text: "Olá, gostaria de participar?"
@@ -26,6 +38,27 @@ responses:
 actions:
   - action_random_comment
   - action_send_vote
+
+forms:
+  vote_form:
+    conversation_id:
+      - type: from_entity
+        entity: float
+    vote:
+      - type: categorical
+        values:
+          - agree
+          - disagree
+          - pass
+    number_comments:
+      - type: from_entity
+        entity: float
+    number_voted_comments:
+      - type: from_entity
+        entity: float
+    current_comment_id:
+      - type: from_entity
+        entity: float
 
 session_config:
   session_expiration_time: 60

@@ -12,3 +12,6 @@ pipeline:
     epochs: 55
   - name: EntitySynonymMapper
   - name: ResponseSelector
+
+policies:
+  - name: RulePolicy
