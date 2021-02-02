@@ -24,6 +24,7 @@ nlu:
     - jamais
     - discordo
     - discordar
+    - não concordo
 
 - intent: pass
   examples: |
