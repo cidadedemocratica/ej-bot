@@ -8,5 +8,5 @@ COPY ./docker/ /tmp
 
 RUN pip install --no-cache-dir -r ./tmp/requirements.txt
 RUN python -c "import nltk; nltk.download('stopwords');"
-RUN python -m spacy download pt
+RUN python -m spacy download pt_core_news_sm
 RUN find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
