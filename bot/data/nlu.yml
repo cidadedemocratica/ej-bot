@@ -4,6 +4,13 @@ nlu:
 - intent: start
   examples: |
     - começar a conversar
+    - oi
+    - olá
+    - hey
+    - Bom dia
+    - Boa tarde
+    - Boa noite
+    - Oi, tudo bem?
 
 - intent: agree
   examples: |

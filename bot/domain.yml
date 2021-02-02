@@ -20,6 +20,8 @@ responses:
       payload: "/disagree"
     - title: "Pular"
       payload: "/pass"
+  utter_vote_received:
+    - text: "Voto computado!"
 
 actions:
   - action_random_comment
