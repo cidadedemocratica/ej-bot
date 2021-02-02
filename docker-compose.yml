@@ -29,6 +29,7 @@ services:
   # ================================= Actions =================================
   # Rasa middleware used to connect with external APIs.
   actions:
+    container_name: actions
     build:
       context: .
       dockerfile: ./docker/actions.Dockerfile
