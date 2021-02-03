@@ -19,10 +19,14 @@ style:
 
 test:
   before_script:
-    - apk add gcc make
-    - apk add python python-dev py-pip build-base
+    - docker info
+    - apk update
+    - apk upgrade
+    - apk add curl jq python3 python3-dev build-base libffi-dev libressl-dev gettext
+    - curl -O https://bootstrap.pypa.io/get-pip.py
+    - python3 get-pip.py
     - pip install docker-compose
-    - make first-run
+    - make build
     - make train
   stage: test
   script: 
