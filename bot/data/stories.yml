@@ -6,33 +6,6 @@ stories:
   steps:
   - intent: start
   - action: utter_start
-  - intent: agree
-  - action: action_random_comment
-  - intent: agree
-  - action: action_send_vote
-
-
-- story: happy path 2
-  steps:
-  - intent: start
-  - action: utter_start
-  - intent: agree
-  - action: action_random_comment
-  - intent: disagree
-  - action: action_send_vote
-  - action: utter_goodbye
-
-
-- story: happy path with out of context message 2
-  steps:
-  - intent: start
-  - action: utter_start
-  - intent: agree
-  - action: action_random_comment
-  - intent: disagree
-  - action: action_send_vote
-  - intent: out_of_context
-  - action: utter_out_of_context
 
 - story: User don't want to participate sad path
   steps:
@@ -40,3 +13,10 @@ stories:
   - action: utter_start
   - intent: disagree
   - action: utter_goodbye
+
+- story: Activate vote form
+  steps:
+    - intent: agree
+    - action: action_random_comment
+    - action: vote_form
+    - active_loop: vote_form

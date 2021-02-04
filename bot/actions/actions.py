@@ -5,12 +5,12 @@
 # https://rasa.com/docs/rasa/custom-actions
 
 import requests
-
+from typing import Text, List, Any, Dict
 #
 from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
-
+from rasa_sdk.types import DomainDict
 #
 #
 class ActionSetConversationId(Action):
@@ -35,10 +35,9 @@ class ActionRandomComment(Action):
         # current_conversation = tracker.get_slot("conversation_id")
         comment = 'Comment text here'
         comment_id = 53
+        SlotSet("comment_text", comment)
         SlotSet("current_comment_id", comment_id)
         SlotSet("loop_comment", True)
-        dispatcher.utter_message(comment)
-        dispatcher.utter_message(template="utter_vote")
         return []
 
 class ActionSendVote(Action):
@@ -55,12 +54,16 @@ class ActionSendVote(Action):
         return []
 
 class ValidateVoteForm(FormValidationAction):
-    def name(self):
+    def name (self) -> Text:
         return "validate_vote_form"
 
-    def validate_vote(self, slot_value, dispatcher, tracker, domain):
+    def validate_vote(        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
         """Validate vote value."""
-        dispatcher.utter_message(slot_value)
         if False:
             # validation succeeded, set the value of the "cuisine" slot to value
             return {"vote": slot_value}

@@ -18,25 +18,27 @@ slots:
     type: float
   current_comment_id:
     type: float
+  comment_text:
+    type: text
 
 responses:
   utter_start:
   - text: "Olá, gostaria de participar?"
   utter_goodbye:
   - text: "Agradeço pela participação! Até logo"
-  utter_vote:
-  - text: "Voto"
-    buttons:
-    - title: "Concordar"
-      payload: "/agree"
-    - title: "Discordar"
-      payload: "/disagree"
-    - title: "Pular"
-      payload: "/pass"
   utter_vote_received:
     - text: "Voto computado!"
   utter_out_of_context:
     - text: "Desculpe, não sei como posso te ajudar com isso."
+  utter_ask_vote:
+    - text: "{comment_text}"
+      buttons:
+      - title: "Concordar"
+        payload: "agree"
+      - title: "Discordar"
+        payload: "disagree"
+      - title: "Pular"
+        payload: "pass"
 actions:
   - action_random_comment
   - action_send_vote
@@ -47,9 +49,9 @@ forms:
     vote:
       - type: categorical
         values:
-          - Concordar
-          - Discordar
-          - Pular
+          - "agree"
+          - "disagree"
+          - "pass"
 
 session_config:
   session_expiration_time: 60
