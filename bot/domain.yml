@@ -6,7 +6,7 @@ intents:
   - pass
   - start
   - out_of_context
-  - votar
+
 slots:
   conversation_id:
     type: float
@@ -40,6 +40,7 @@ responses:
 actions:
   - action_random_comment
   - action_send_vote
+  - validate_vote_form
 
 forms:
   vote_form:

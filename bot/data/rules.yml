@@ -1,11 +1,7 @@
 version: "2.0"
 
 rules:
-- rule: Activate next vote form whenever a vote is computed
+- rule: User ask a out of context question
   steps:
-  - action: action_send_vote
-  - slot_was_set:
-    - vote: null
- # - action: action_random_comment
- # - action: vote_form
- # - active_loop: vote_form
+  - intent: out_of_context
+  - action: utter_out_of_context

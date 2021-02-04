@@ -7,7 +7,7 @@
 import requests
 
 #
-from rasa_sdk import Action, Tracker
+from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
 
@@ -36,6 +36,7 @@ class ActionRandomComment(Action):
         comment = 'Comment text here'
         comment_id = 53
         SlotSet("current_comment_id", comment_id)
+        SlotSet("loop_comment", True)
         dispatcher.utter_message(comment)
         dispatcher.utter_message(template="utter_vote")
         return []
@@ -52,3 +53,18 @@ class ActionSendVote(Action):
         SlotSet("number_voted_comments", voted_comments + 1 )
         dispatcher.utter_message(template="utter_vote_received")
         return []
+
+class ValidateVoteForm(FormValidationAction):
+    def name(self):
+        return "validate_vote_form"
+
+    def validate_vote(self, slot_value, dispatcher, tracker, domain):
+        """Validate vote value."""
+        dispatcher.utter_message(slot_value)
+        if False:
+            # validation succeeded, set the value of the "cuisine" slot to value
+            return {"vote": slot_value}
+        else:
+            # validation failed, set this slot to None so that the
+            # user will be asked for the slot again
+            return {"vote": None}

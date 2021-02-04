@@ -54,7 +54,3 @@ nlu:
       - pausa
       - tempo
       - stop
-
-- intent: votar
-  examples: |
-    - quero votar
