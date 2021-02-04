@@ -38,3 +38,23 @@ nlu:
     - não sei
     - pular
     - pulo
+
+- intent: out_of_context
+  examples: |
+      - 4 + 2 = ?
+      - Queria pedir uma pizza
+      - Como tá o tempo?
+      - Como vc tá?
+      - você é um robô?
+      - Fala alguma coisa
+      - asdfgasd
+      - chega
+      - para
+      - parar
+      - pausa
+      - tempo
+      - stop
+
+- intent: votar
+  examples: |
+    - quero votar

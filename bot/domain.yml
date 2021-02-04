@@ -5,7 +5,8 @@ intents:
   - disagree
   - pass
   - start
-
+  - out_of_context
+  - votar
 slots:
   conversation_id:
     type: float
@@ -22,7 +23,7 @@ responses:
   utter_start:
   - text: "Olá, gostaria de participar?"
   utter_goodbye:
-  - text: "Sua participação foi computada! Até logo"
+  - text: "Agradeço pela participação! Até logo"
   utter_vote:
   - text: "Voto"
     buttons:
@@ -34,31 +35,20 @@ responses:
       payload: "/pass"
   utter_vote_received:
     - text: "Voto computado!"
-
+  utter_out_of_context:
+    - text: "Desculpe, não sei como posso te ajudar com isso."
 actions:
   - action_random_comment
   - action_send_vote
 
 forms:
   vote_form:
-    conversation_id:
-      - type: from_entity
-        entity: float
     vote:
       - type: categorical
         values:
-          - agree
-          - disagree
-          - pass
-    number_comments:
-      - type: from_entity
-        entity: float
-    number_voted_comments:
-      - type: from_entity
-        entity: float
-    current_comment_id:
-      - type: from_entity
-        entity: float
+          - Concordar
+          - Discordar
+          - Pular
 
 session_config:
   session_expiration_time: 60

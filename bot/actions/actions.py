@@ -9,16 +9,33 @@ import requests
 #
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
+from rasa_sdk.events import SlotSet
 
 #
 #
+class ActionSetConversationId(Action):
+    def name(self):
+        return 'action_set_conversation_id'
+
+    def run(self, dispatcher, tracker, domain):
+        # TODO: get values from EJ server
+        conversation_id = 1
+        number_comments = 10
+        number_voted_comments = 1
+        SlotSet("conversation_id", conversation_id)
+        SlotSet("number_comments", number_comments)
+        SlotSet("number_voted_comments", number_voted_comments)
+
 class ActionRandomComment(Action):
     def name(self):
         return 'action_random_comment'
 
     def run(self, dispatcher, tracker, domain):
         # TODO: Add code to get comment from EJ server
+        # current_conversation = tracker.get_slot("conversation_id")
         comment = 'Comment text here'
+        comment_id = 53
+        SlotSet("current_comment_id", comment_id)
         dispatcher.utter_message(comment)
         dispatcher.utter_message(template="utter_vote")
         return []
@@ -31,5 +48,7 @@ class ActionSendVote(Action):
         # TODO: Add code to send request to EJ with vote value
         vote = tracker.latest_message['intent'].get('name')
         dispatcher.utter_message(vote)
+        voted_comments = tracker.get_slot("number_voted_comments")
+        SlotSet("number_voted_comments", voted_comments + 1 )
         dispatcher.utter_message(template="utter_vote_received")
         return []
