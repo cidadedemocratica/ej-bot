@@ -16,14 +16,22 @@ slots:
     - "agree"
     - "disagree"
     - "pass"
+    influence_conversation: false
   number_comments:
     type: float
+    influence_conversation: false
   number_voted_comments:
     type: float
+    influence_conversation: false
   current_comment_id:
     type: float
+    influence_conversation: false
   comment_text:
     type: text
+    influence_conversation: false
+  change_comment:
+    type: bool
+    influence_conversation: false
 
 responses:
   utter_start:
@@ -35,17 +43,10 @@ responses:
   utter_out_of_context:
     - text: "Desculpe, não sei como posso te ajudar com isso."
   utter_ask_vote:
-    - text: "{comment_text}"
-      buttons:
-      - title: "Concordar"
-        payload: "agree"
-      - title: "Discordar"
-        payload: "disagree"
-      - title: "Pular"
-        payload: "pass"
+    - text: "uai"
 actions:
   - action_setup_conversation
-  - action_send_vote
+  - action_ask_vote
   - validate_vote_form
 
 forms:

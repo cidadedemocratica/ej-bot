@@ -9,9 +9,8 @@ from typing import Text, List, Any, Dict
 #
 from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import SlotSet
+from rasa_sdk.events import SlotSet, FollowupAction, EventType
 from rasa_sdk.types import DomainDict
-
 #
 #
 class ActionSetupConversation(Action):
@@ -21,7 +20,7 @@ class ActionSetupConversation(Action):
     def run(self, dispatcher, tracker, domain):
         # TODO: get values from EJ server
         conversation_id = 1
-        number_comments = 10
+        number_comments = 3
         number_voted_comments = 1
         first_comment = "Comment text here"
         comment_id = 53
@@ -31,21 +30,34 @@ class ActionSetupConversation(Action):
             SlotSet("number_comments", number_comments),
             SlotSet("comment_text", first_comment),
             SlotSet("current_comment_id", comment_id),
+            SlotSet("change_comment", False),
+            FollowupAction("vote_form")
         ]
 
+class ActionAskVote(Action):
+    def name(self) -> Text:
+        return "action_ask_vote"
 
-class ActionSendVote(Action):
-    def name(self):
-        return "action_send_vote"
+    def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
+    ) -> List[EventType]:
+        buttons = [{"title": "Concordar", "payload": "agree"}, {"title": "Discordar", "payload": "disagree"}, {"title": "Pular", "payload": "pass"},]
 
-    def run(self, dispatcher, tracker, domain):
-        # TODO: Add code to send request to EJ with vote value
-        vote = tracker.latest_message["intent"].get("name")
-        dispatcher.utter_message(vote)
-        voted_comments = tracker.get_slot("number_voted_comments")
-        dispatcher.utter_message(template="utter_vote_received")
-        return [SlotSet("number_voted_comments", voted_comments + 1)]
-
+        if tracker.get_slot("change_comment"):
+            # TODO: get values from EJ server
+            # next_comment = get_random_comment()
+            new_comment = "novo comentário com outro id"
+            dispatcher.utter_message(text=new_comment, buttons=buttons)
+            number_voted_comments = tracker.get_slot("number_comments") + 1
+            comment_id = 22
+            return [
+                SlotSet("number_voted_comments", number_voted_comments),
+                SlotSet("comment_text", new_comment),
+                SlotSet("current_comment_id", comment_id),
+            ]
+        else:
+            dispatcher.utter_message(text=tracker.get_slot("comment_text"), buttons=buttons)
+            return [SlotSet("change_comment", True)]
 
 class ValidateVoteForm(FormValidationAction):
     def name(self) -> Text:
@@ -59,18 +71,20 @@ class ValidateVoteForm(FormValidationAction):
         domain: DomainDict,
     ) -> Dict[Text, Any]:
         """Validate vote value."""
-        vote_value = dispatcher.utter_message(slot_value)
-        if vote_value in ["agree", "disagree", "pass"]:
+        if str(slot_value) in ["agree", "disagree", "pass"]:
             # TODO: Send vote value to EJ server
-            voted_comments = tracker.get_slot("number_voted_comments") + 1
+            voted_comments = tracker.get_slot("number_voted_comments")
             total_comments = tracker.get_slot("number_comments")
-
+            dispatcher.utter_message(template="utter_vote_received")
             # TODO: Get next random comment
             # was_sent = send_vote(vote_value)
-            # next_comment = get_random_comment()
             if voted_comments == total_comments:
                 # user voted in all comments, can exit loop
-                return {"vote": slot_value}
-
-        # user still has comments to vote, remain in loop OR did not send expected vote value
+                return [{"vote": slot_value}]
+            else:
+                # user still has comments to vote, remain in loop
+                return {"vote": None}
+        else:
+            dispatcher.utter_message(template="utter_out_of_context")
+            # did not send expected vote value
         return {"vote": None}

@@ -17,7 +17,7 @@ stories:
 - story: Activate vote form
   steps:
     - intent: agree
-    - action: action_random_comment
+    - action: action_setup_conversation
     - action: vote_form
     - active_loop: vote_form
     - active_loop: null
