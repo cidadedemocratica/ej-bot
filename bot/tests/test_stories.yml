@@ -1,0 +1,26 @@
+#### This file contains tests to evaluate that your bot behaves as expected.
+#### If you want to learn more, please see the docs: https://rasa.com/docs/rasa/testing-your-assistant
+
+stories:
+- story: Greet user
+  steps:
+  - user: |
+      oi
+    intent: start
+  - action: utter_start
+  - user: |
+      sim
+    intent: agree
+  - action: action_random_comment
+  - action: vote_form
+
+- story: User don't want to participate sad path
+  steps:
+  - user: |
+      olá
+    intent: start
+  - action: utter_start
+  - user: |
+      não
+    intent: disagree
+  - action: utter_goodbye

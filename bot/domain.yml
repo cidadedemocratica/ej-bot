@@ -44,7 +44,7 @@ responses:
       - title: "Pular"
         payload: "pass"
 actions:
-  - action_random_comment
+  - action_setup_conversation
   - action_send_vote
   - validate_vote_form
 
