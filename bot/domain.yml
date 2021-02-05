@@ -11,7 +11,11 @@ slots:
   conversation_id:
     type: float
   vote:
-    type: text
+    type: categorical
+    values:
+    - "agree"
+    - "disagree"
+    - "pass"
   number_comments:
     type: float
   number_voted_comments:
@@ -47,11 +51,7 @@ actions:
 forms:
   vote_form:
     vote:
-      - type: categorical
-        values:
-          - "agree"
-          - "disagree"
-          - "pass"
+      - type: from_text
 
 session_config:
   session_expiration_time: 60

@@ -22,9 +22,9 @@ class ActionSetConversationId(Action):
         conversation_id = 1
         number_comments = 10
         number_voted_comments = 1
-        SlotSet("conversation_id", conversation_id)
-        SlotSet("number_comments", number_comments)
-        SlotSet("number_voted_comments", number_voted_comments)
+        return [SlotSet("number_voted_comments", number_voted_comments),
+                SlotSet("conversation_id", conversation_id),
+                SlotSet("number_comments", number_comments)]
 
 class ActionRandomComment(Action):
     def name(self):
@@ -35,10 +35,10 @@ class ActionRandomComment(Action):
         # current_conversation = tracker.get_slot("conversation_id")
         comment = 'Comment text here'
         comment_id = 53
-        SlotSet("comment_text", comment)
-        SlotSet("current_comment_id", comment_id)
-        SlotSet("loop_comment", True)
-        return []
+        return [SlotSet("comment_text", comment), 
+                SlotSet("current_comment_id", comment_id),
+                SlotSet("number_voted_comments", 0),
+                ]
 
 class ActionSendVote(Action):
     def name(self):
@@ -49,9 +49,8 @@ class ActionSendVote(Action):
         vote = tracker.latest_message['intent'].get('name')
         dispatcher.utter_message(vote)
         voted_comments = tracker.get_slot("number_voted_comments")
-        SlotSet("number_voted_comments", voted_comments + 1 )
         dispatcher.utter_message(template="utter_vote_received")
-        return []
+        return [SlotSet("number_voted_comments", voted_comments + 1 )]
 
 class ValidateVoteForm(FormValidationAction):
     def name (self) -> Text:
@@ -64,6 +63,7 @@ class ValidateVoteForm(FormValidationAction):
         domain: DomainDict,
     ) -> Dict[Text, Any]:
         """Validate vote value."""
+        dispatcher.utter_message(slot_value)
         if False:
             # validation succeeded, set the value of the "cuisine" slot to value
             return {"vote": slot_value}
