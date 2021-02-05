@@ -20,3 +20,6 @@ stories:
     - action: action_random_comment
     - action: vote_form
     - active_loop: vote_form
+    - active_loop: null
+    - slot_was_set:
+      - requested_slot: null
