@@ -11,6 +11,7 @@ from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, FollowupAction, EventType
 from rasa_sdk.types import DomainDict
+
 #
 #
 class ActionSetupConversation(Action):
@@ -31,8 +32,9 @@ class ActionSetupConversation(Action):
             SlotSet("comment_text", first_comment),
             SlotSet("current_comment_id", comment_id),
             SlotSet("change_comment", False),
-            FollowupAction("vote_form")
+            FollowupAction("vote_form"),
         ]
+
 
 class ActionAskVote(Action):
     def name(self) -> Text:
@@ -41,7 +43,11 @@ class ActionAskVote(Action):
     def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[EventType]:
-        buttons = [{"title": "Concordar", "payload": "agree"}, {"title": "Discordar", "payload": "disagree"}, {"title": "Pular", "payload": "pass"},]
+        buttons = [
+            {"title": "Concordar", "payload": "agree"},
+            {"title": "Discordar", "payload": "disagree"},
+            {"title": "Pular", "payload": "pass"},
+        ]
 
         if tracker.get_slot("change_comment"):
             # TODO: get values from EJ server
@@ -56,8 +62,11 @@ class ActionAskVote(Action):
                 SlotSet("current_comment_id", comment_id),
             ]
         else:
-            dispatcher.utter_message(text=tracker.get_slot("comment_text"), buttons=buttons)
+            dispatcher.utter_message(
+                text=tracker.get_slot("comment_text"), buttons=buttons
+            )
             return [SlotSet("change_comment", True)]
+
 
 class ValidateVoteForm(FormValidationAction):
     def name(self) -> Text:

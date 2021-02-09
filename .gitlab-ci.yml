@@ -32,3 +32,4 @@ test:
   script: 
     - make run-test-nlu
     - make run-test-core
+    - make test-actions

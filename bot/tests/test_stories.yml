@@ -11,8 +11,14 @@ stories:
   - user: |
       sim
     intent: agree
-  - action: action_random_comment
+  - action: action_setup_conversation
+    - slot_was_set:
+      - number_voted_comments: 1
   - action: vote_form
+  - active_loop: vote_form
+  - user: |
+      agree
+  - action: validate_vote_form
 
 - story: User don't want to participate sad path
   steps:
