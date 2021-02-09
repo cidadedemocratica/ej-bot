@@ -50,7 +50,7 @@ stories:
     - slot_was_set:
       vote: null
 
-- story: User votes out of context 
+- story: User utters out of context 
   steps:
   - user: |
       não entendi

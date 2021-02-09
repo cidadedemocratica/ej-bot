@@ -2,7 +2,7 @@ FROM python:3.7-slim
 
 RUN apt update && apt install -y gcc make
 
-RUN python -m pip install --upgrade pip
+RUN python -m pip install --upgrade pip==20.2
 
 COPY ./docker/ /tmp
 

@@ -36,6 +36,7 @@ def test_action_setup_conversation(dispatcher, domain):
     ]
     assert events == expected_events
 
+
 def test_action_ask_vote(dispatcher, domain):
     tracker = DialogueStateTracker(sender_id="1", slots=AnySlotDict())
     action = ActionAskVote()
