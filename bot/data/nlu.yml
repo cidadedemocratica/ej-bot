@@ -54,3 +54,4 @@ nlu:
       - pausa
       - tempo
       - stop
+      - sair

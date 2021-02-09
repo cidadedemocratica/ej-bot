@@ -21,7 +21,7 @@ class ActionSetupConversation(Action):
     def run(self, dispatcher, tracker, domain):
         # TODO: get values from EJ server
         conversation_id = 1
-        number_comments = 3
+        number_comments = 2
         number_voted_comments = 1
         first_comment = "Comment text here"
         comment_id = 53
@@ -87,12 +87,12 @@ class ValidateVoteForm(FormValidationAction):
             dispatcher.utter_message(template="utter_vote_received")
             # TODO: Get next random comment
             # was_sent = send_vote(vote_value)
-            if voted_comments == total_comments:
-                # user voted in all comments, can exit loop
-                return [{"vote": slot_value}]
-            else:
+            if voted_comments < total_comments:
                 # user still has comments to vote, remain in loop
                 return {"vote": None}
+            else:
+                # user voted in all comments, can exit loop
+                return [{"vote": slot_value}]
         else:
             dispatcher.utter_message(template="utter_out_of_context")
             # did not send expected vote value

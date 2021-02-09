@@ -8,17 +8,54 @@ stories:
       oi
     intent: start
   - action: utter_start
+
+- story: User votes
+  steps:
   - user: |
       sim
     intent: agree
   - action: action_setup_conversation
     - slot_was_set:
       - number_voted_comments: 1
+      - conversation_id: 1
+      - number_comments: 2
+      - comment_text: "Comment text here"
+      - comment_id: 53
   - action: vote_form
   - active_loop: vote_form
+  - action: action_ask_vote
   - user: |
       agree
   - action: validate_vote_form
+      - slot_was_set:
+        - vote: null
+  - action: action_ask_vote
+    - slot_was_set:
+      - number_voted_comments: 2
+      - conversation_id: 1
+      - number_comments: 2
+      - comment_text: "novo comentário com outro id"
+      - comment_id: 22
+  - user: |
+      agree
+  - action: validate_vote_form
+    - slot_was_set:
+      vote: "agree"
+
+- story: User votes out of context, value of vote
+  steps:
+  - user: |
+      sair
+  - action: validate_vote_form
+    - slot_was_set:
+      vote: null
+
+- story: User votes out of context 
+  steps:
+  - user: |
+      não entendi
+    intent: out_of_context
+  - action: utter_out_of_context
 
 - story: User don't want to participate sad path
   steps:
