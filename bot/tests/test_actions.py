@@ -5,7 +5,7 @@ from typing import Text, List, Any, Dict
 from actions import ActionSetupConversation, ActionAskVote
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, FollowupAction
-from rasa.shared.core.trackers import DialogueStateTracker
+from rasa.shared.core.trackers import DialogueStateTracker, AnySlotDict
 
 
 EMPTY_TRACKER = None
@@ -34,7 +34,7 @@ def test_action_setup_conversation(dispatcher, domain):
   assert events == expected_events
 
 def test_action_ask_vote(dispatcher, domain):
-  tracker = DialogueStateTracker.from_dict(sender_id="1", events_as_dict=List[Dict["action": 1]], slots=[List[change_comment],False])
+  tracker = DialogueStateTracker(sender_id="1", slots=AnySlotDict())
   action = ActionAskVote()
   events = action.run(dispatcher, tracker, domain)
   expected_events = [SlotSet("change_comment", True)]

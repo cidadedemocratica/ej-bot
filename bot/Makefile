@@ -20,6 +20,9 @@ train:
 test:
 	rasa test --out results/
 
+test-actions:
+	python -m pytest
+
 test-nlu:
 	rasa test nlu --out results/results-nlu-test
 
