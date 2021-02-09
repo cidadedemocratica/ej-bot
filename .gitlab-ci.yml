@@ -22,7 +22,7 @@ test:
     - docker info
     - apk update
     - apk upgrade
-    - apk add curl jq python3 python3-dev build-base libffi-dev libressl-dev gettext
+    - apk add curl jq python3 python3-dev build-base libffi-dev libressl-dev gettext rust cargo
     - curl -O https://bootstrap.pypa.io/get-pip.py
     - python3 get-pip.py
     - pip install --upgrade pip
