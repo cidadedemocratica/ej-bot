@@ -1,5 +1,5 @@
 
-rasa~=2.0.2 # when updating, check the sdk version in the Dockerfile as well!
+rasa~=2.2.10 # when updating, check the sdk version in the Dockerfile as well!
 nltk==3.4.5
 spacy==3.0.0
 -r requirements-actions.txt
