@@ -8,6 +8,10 @@ install:
 	pip install -r ../requirements.txt && \
 	pip install -r ../x-requirements.txt
 
+# RASA X
+x:
+	rasa x
+
 # NLU
 train-nlu:
 	rasa train nlu -vv

@@ -38,3 +38,20 @@ services:
     volumes:
       - ./bot/actions:/bot/actions
     command: sh -c "make actions"
+
+  # ================================= RASA X ==================================
+  # Rasa X container
+  x:
+    build:
+      context: .
+      dockerfile: ./docker/bot.Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./bot/:/bot/
+    ports:
+      - 5002:5002
+    environment:
+      - GIT_PYTHON_REFRESH=quiet
+    depends_on:
+      - actions
+    command: sh -c "make x"

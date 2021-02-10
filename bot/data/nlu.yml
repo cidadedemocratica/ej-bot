@@ -38,6 +38,8 @@ nlu:
     - não sei
     - pular
     - pulo
+    - passa
+    - próxima pergunta
 
 - intent: out_of_context
   examples: |

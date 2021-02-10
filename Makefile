@@ -45,6 +45,8 @@ train:
 	mkdir -p bot/models
 	docker-compose up --build coach
 
+run-x:
+	docker-compose run --rm --service-ports x make x
 ############################## TESTS ##############################
 test:
 	docker-compose run --rm bot make test
