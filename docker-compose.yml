@@ -19,6 +19,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./bot/:/bot/
+    networks:
+      - bot-network
     ports:
       - 5006:5006
       - 5004:5004
@@ -33,6 +35,8 @@ services:
     build:
       context: .
       dockerfile: ./docker/actions.Dockerfile
+    networks:
+      - bot-network
     ports:
       - 5055:5055
     volumes:
@@ -56,3 +60,7 @@ services:
     depends_on:
       - actions
     command: sh -c "make x"
+
+networks: 
+  bot-network:
+    driver: bridge

@@ -37,7 +37,8 @@ build-coach:
 
 
 run-shell: ## Run bot in shell, sucessful when shows "Bot loaded. Type a message and press enter (use '/stop' to exit): "    
-	docker-compose run --rm --service-ports bot make shell
+	docker-compose run -d actions make actions
+	docker-compose run bot make shell
 
 run-api:
 	docker-compose run --rm --service-ports bot make api
