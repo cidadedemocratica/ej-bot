@@ -44,9 +44,9 @@ class ActionAskVote(Action):
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[EventType]:
         buttons = [
-            {"title": "Concordar", "payload": "agree"},
-            {"title": "Discordar", "payload": "disagree"},
-            {"title": "Pular", "payload": "pass"},
+            {"title": "Concordar", "payload": "Concordar"},
+            {"title": "Discordar", "payload": "Discordas"},
+            {"title": "Pular", "payload": "Pular"},
         ]
 
         if tracker.get_slot("change_comment"):
@@ -80,7 +80,7 @@ class ValidateVoteForm(FormValidationAction):
         domain: DomainDict,
     ) -> Dict[Text, Any]:
         """Validate vote value."""
-        if str(slot_value) in ["agree", "disagree", "pass"]:
+        if str(slot_value) in ["Concordar", "Discordar", "Pular"]:
             # TODO: Send vote value to EJ server
             voted_comments = tracker.get_slot("number_voted_comments")
             total_comments = tracker.get_slot("number_comments")
