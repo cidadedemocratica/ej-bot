@@ -1,4 +1,4 @@
-image: docker:stable
+image: docker:latest
 
 services:
   - docker:dind
@@ -22,9 +22,10 @@ test:
     - docker info
     - apk update
     - apk upgrade
-    - apk add curl jq python3 python3-dev build-base libffi-dev libressl-dev gettext
+    - apk add curl jq python3 python3-dev build-base libffi-dev libressl-dev gettext rust cargo
     - curl -O https://bootstrap.pypa.io/get-pip.py
     - python3 get-pip.py
+    - pip install --upgrade pip
     - pip install docker-compose
     - make build
     - make train
@@ -32,3 +33,4 @@ test:
   script: 
     - make run-test-nlu
     - make run-test-core
+    - make test-actions

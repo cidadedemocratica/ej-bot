@@ -43,6 +43,7 @@ A execução de testes também é realizada por meio de comandos make, listados 
 - make test
 - make run-test-nlu
 - make run-test-core
+- make test-actions
 
 
 # Estrutura básica do projeto
@@ -59,8 +60,9 @@ Abaixo, segue em destaque na estrutura de pastas os arquivos que serão mais uti
         - stories.yml # cada story é um fluxo que deve ocorrer entre o usuário e o bot
     -- domain.yml # são definidas as utter, respostas do bot que são apenas texto e também  descreve o domínio do bot, que inclue intents, entities, slots, templates e actions que o bot deve ter consciência.
     -- endpoints.yml # arquivo que contém a configuração do webhook para uma ação personalizada
--- tests/
-    - test_stories.yml # testes dos fluxos de conversas
+    -- tests/
+        - test_stories.yml # testes dos fluxos de conversas
+        - test_actions.py # teste das ações e outros recursos, usando pytest
 ```
 
 

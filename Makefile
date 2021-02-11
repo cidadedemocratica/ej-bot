@@ -49,11 +49,15 @@ train:
 test:
 	docker-compose run --rm bot make test
 
+test-actions:
+	docker-compose run --rm bot make test-actions
+
 run-test-nlu:
 	docker-compose run --rm bot make test-nlu
 
 run-test-core:
 	docker-compose run --rm bot make test-core
+
 
 validate:
 	docker-compose run --rm bot rasa data validate --domain domain.yml --data data/ -vv
