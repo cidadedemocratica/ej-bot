@@ -21,12 +21,16 @@ build: ## Build base requirements dockerfile and coach and bot services
 	make build-requirements
 	make build-coach
 	make build-bot
+	make build-x
 
 build-requirements:
 	docker build . --no-cache -f docker/requirements.Dockerfile -t botrequirements
 
 build-bot:
 	docker-compose build --no-cache bot
+
+build-x:
+	docker-compose build --no-cache x
 
 build-coach:
 	docker-compose build --no-cache coach
@@ -39,7 +43,7 @@ run-api:
 	docker-compose run --rm --service-ports bot make api
 
 run-actions:
-	docker-compose run --rm --service-ports bot make actions
+	docker-compose run --rm --service-ports actions make actions
 
 train:
 	mkdir -p bot/models

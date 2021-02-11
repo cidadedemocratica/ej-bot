@@ -48,6 +48,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./bot/:/bot/
+      - /bot/tests/:/bot/tests/
     ports:
       - 5002:5002
     environment:
