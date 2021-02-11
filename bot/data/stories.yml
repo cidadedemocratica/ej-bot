@@ -2,29 +2,24 @@ version: "2.0"
 
 stories:
 
-- story: happy path
+- story: Greet user
   steps:
   - intent: start
   - action: utter_start
-  - intent: agree
-  - action: action_random_comment
-  - intent: agree
-  - action: action_send_vote
 
-
-- story: happy path 2
-  steps:
-  - intent: start
-  - action: utter_start
-  - intent: agree
-  - action: action_random_comment
-  - intent: disagree
-  - action: action_send_vote
-  - action: utter_goodbye
-
-- story: sad path
+- story: User don't want to participate sad path
   steps:
   - intent: start
   - action: utter_start
   - intent: disagree
   - action: utter_goodbye
+
+- story: Activate vote form
+  steps:
+    - intent: agree
+    - action: action_setup_conversation
+    - action: vote_form
+    - active_loop: vote_form
+    - active_loop: null
+    - slot_was_set:
+      - requested_slot: null

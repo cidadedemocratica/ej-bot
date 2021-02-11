@@ -5,25 +5,54 @@ intents:
   - disagree
   - pass
   - start
+  - out_of_context
+
+slots:
+  conversation_id:
+    type: float
+  vote:
+    type: categorical
+    values:
+    - "agree"
+    - "disagree"
+    - "pass"
+    influence_conversation: false
+  number_comments:
+    type: float
+    influence_conversation: false
+  number_voted_comments:
+    type: float
+    influence_conversation: false
+  current_comment_id:
+    type: float
+    influence_conversation: false
+  comment_text:
+    type: text
+    influence_conversation: false
+  change_comment:
+    type: bool
+    influence_conversation: false
 
 responses:
   utter_start:
   - text: "Olá, gostaria de participar?"
   utter_goodbye:
-  - text: "Sua participação foi computada! Até logo"
-  utter_vote:
-  - text: "Voto"
-    buttons:
-    - title: "Concordar"
-      payload: "/agree"
-    - title: "Discordar"
-      payload: "/disagree"
-    - title: "Pular"
-      payload: "/pass"
-
+  - text: "Agradeço pela participação! Até logo"
+  utter_vote_received:
+    - text: "Voto computado!"
+  utter_out_of_context:
+    - text: "Desculpe, não sei como posso te ajudar com isso."
+  utter_ask_vote:
+    - text: "uai"
 actions:
-  - action_random_comment
-  - action_send_vote
+  - action_setup_conversation
+  - action_ask_vote
+  - validate_vote_form
+
+forms:
+  vote_form:
+    vote:
+      - type: from_text
 
 session_config:
   session_expiration_time: 60

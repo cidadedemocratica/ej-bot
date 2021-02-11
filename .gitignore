@@ -1,6 +1,8 @@
 ./bot/models
+./bot/results/
 */__pycache__/
 .pytest_cache/
 *.pyc
 *.log
 models
+results/

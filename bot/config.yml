@@ -12,3 +12,19 @@ pipeline:
     epochs: 55
   - name: EntitySynonymMapper
   - name: ResponseSelector
+
+policies:
+  - name: TEDPolicy
+    max_history: 10
+    epochs: 20
+    batch_size:
+    - 32
+    - 64
+  - max_history: 6
+    name: AugmentedMemoizationPolicy
+  - name: RulePolicy
+    core_fallback_threshold: 0.3
+    core_fallback_action_name: action_default_fallback
+    enable_fallback_prediction: true
+    restrict_rules: true
+    check_for_contradictions: true
