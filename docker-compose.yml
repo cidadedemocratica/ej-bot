@@ -19,6 +19,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./bot/:/bot/
+    networks:
+      - bot-network
     ports:
       - 5006:5006
       - 5004:5004
@@ -33,8 +35,32 @@ services:
     build:
       context: .
       dockerfile: ./docker/actions.Dockerfile
+    networks:
+      - bot-network
     ports:
       - 5055:5055
     volumes:
       - ./bot/actions:/bot/actions
     command: sh -c "make actions"
+
+  # ================================= RASA X ==================================
+  # Rasa X container
+  x:
+    build:
+      context: .
+      dockerfile: ./docker/bot.Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./bot/:/bot/
+      - /bot/tests/:/bot/tests/
+    ports:
+      - 5002:5002
+    environment:
+      - GIT_PYTHON_REFRESH=quiet
+    depends_on:
+      - actions
+    command: sh -c "make x"
+
+networks: 
+  bot-network:
+    driver: bridge

@@ -11,6 +11,9 @@ nlu:
     - Boa tarde
     - Boa noite
     - Oi, tudo bem?
+    - alo
+    - ois
+    - oie
 
 - intent: agree
   examples: |
@@ -38,6 +41,8 @@ nlu:
     - não sei
     - pular
     - pulo
+    - passa
+    - próxima pergunta
 
 - intent: out_of_context
   examples: |
