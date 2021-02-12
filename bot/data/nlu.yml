@@ -12,6 +12,8 @@ nlu:
     - Boa noite
     - Oi, tudo bem?
     - alo
+    - ois
+    - oie
 
 - intent: agree
   examples: |

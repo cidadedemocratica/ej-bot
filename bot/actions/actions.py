@@ -45,7 +45,7 @@ class ActionAskVote(Action):
     ) -> List[EventType]:
         buttons = [
             {"title": "Concordar", "payload": "Concordar"},
-            {"title": "Discordar", "payload": "Discordas"},
+            {"title": "Discordar", "payload": "Discordar"},
             {"title": "Pular", "payload": "Pular"},
         ]
 
