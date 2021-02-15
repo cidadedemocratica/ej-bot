@@ -1,3 +1,7 @@
 version: "2.0"
 
 rules:
+- rule: User ask a out of context question
+  steps:
+  - intent: out_of_context
+  - action: utter_out_of_context

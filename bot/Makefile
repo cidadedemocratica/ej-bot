@@ -8,6 +8,10 @@ install:
 	pip install -r ../requirements.txt && \
 	pip install -r ../x-requirements.txt
 
+# RASA X
+x:
+	rasa x
+
 # NLU
 train-nlu:
 	rasa train nlu -vv
@@ -20,8 +24,11 @@ train:
 test:
 	rasa test --out results/
 
+test-actions:
+	python -m pytest
+
 test-nlu:
-	rasa test nlu --out results/results-nlu-test
+	rasa test nlu --nlu data/nlu.yml --cross-validation
 
 test-core:
 	rasa test core --fail-on-prediction-errors --out results/results-core-test

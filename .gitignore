@@ -1,6 +1,13 @@
 ./bot/models
+./bot/train_test_split
+./bot/results/
 */__pycache__/
 .pytest_cache/
 *.pyc
 *.log
+*.db
+*.db-shm
+*.db-wal
 models
+results/
+train_test_split

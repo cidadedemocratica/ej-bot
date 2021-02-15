@@ -4,6 +4,16 @@ nlu:
 - intent: start
   examples: |
     - começar a conversar
+    - oi
+    - olá
+    - hey
+    - Bom dia
+    - Boa tarde
+    - Boa noite
+    - Oi, tudo bem?
+    - alo
+    - ois
+    - oie
 
 - intent: agree
   examples: |
@@ -24,9 +34,29 @@ nlu:
     - jamais
     - discordo
     - discordar
+    - não concordo
 
 - intent: pass
   examples: |
     - não sei
     - pular
     - pulo
+    - passa
+    - próxima pergunta
+
+- intent: out_of_context
+  examples: |
+      - 4 + 2 = ?
+      - Queria pedir uma pizza
+      - Como tá o tempo?
+      - Como vc tá?
+      - você é um robô?
+      - Fala alguma coisa
+      - asdfgasd
+      - chega
+      - para
+      - parar
+      - pausa
+      - tempo
+      - stop
+      - sair
