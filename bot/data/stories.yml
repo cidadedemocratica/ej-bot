@@ -14,12 +14,51 @@ stories:
   - intent: disagree
   - action: utter_goodbye
 
-- story: Activate vote form
+- story: User wants to participate
   steps:
-    - intent: agree
-    - action: action_setup_conversation
-    - action: vote_form
-    - active_loop: vote_form
-    - active_loop: null
-    - slot_was_set:
-      - vote: null
+  - intent: start
+  - action: utter_start
+  - intent: agree
+  - action: utter_ask_email
+
+- story: Activate vote form with user email
+  steps:
+  - intent: agree
+  - action: utter_ask_email
+  - intent: email
+    entities:
+    - email
+  - action: action_setup_conversation
+  - action: vote_form
+  - active_loop: vote_form
+  - active_loop: null
+  - slot_was_set:
+    - vote: null
+
+- story: Activate vote form without user email
+  steps:
+  - intent: agree
+  - action: utter_ask_email
+  - intent: disagree
+  - action: action_setup_conversation
+  - action: vote_form
+  - active_loop: vote_form
+  - active_loop: null
+  - slot_was_set:
+    - vote: null
+
+- story: User provides invalid email
+  steps:
+  - intent: agree
+  - action: utter_ask_email
+  - intent: invalid_email
+  - action: utter_invalid_email
+  - intent: email
+    entities:
+    - email
+  - action: action_setup_conversation
+  - action: vote_form
+  - active_loop: vote_form
+  - active_loop: null
+  - slot_was_set:
+    - vote: null

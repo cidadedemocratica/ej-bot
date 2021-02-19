@@ -9,51 +9,10 @@ stories:
     intent: start
   - action: utter_start
 
-- story: User votes
-  steps:
-  - user: |
-      sim
-    intent: agree
-  - action: action_setup_conversation
-    - slot_was_set:
-      - number_voted_comments: 1
-      - conversation_id: 1
-      - number_comments: 2
-      - comment_text: "Comment text here"
-      - comment_id: 53
-  - action: vote_form
-  - active_loop: vote_form
-  - action: action_ask_vote
-  - user: |
-      agree
-  - action: validate_vote_form
-      - slot_was_set:
-        - vote: null
-  - action: action_ask_vote
-    - slot_was_set:
-      - number_voted_comments: 2
-      - conversation_id: 1
-      - number_comments: 2
-      - comment_text: "novo comentário com outro id"
-      - comment_id: 22
-  - user: |
-      agree
-  - action: validate_vote_form
-    - slot_was_set:
-      vote: "agree"
-
-- story: User votes out of context, value of vote
-  steps:
-  - user: |
-      sair
-  - action: validate_vote_form
-    - slot_was_set:
-      vote: null
-
 - story: User utters out of context 
   steps:
   - user: |
-      não entendi
+      chega
     intent: out_of_context
   - action: utter_out_of_context
 
@@ -67,3 +26,50 @@ stories:
       não
     intent: disagree
   - action: utter_goodbye
+
+- story: User agree to use email
+  steps:
+  - user: |
+      oi
+    intent: start
+  - action: utter_start
+  - user: |
+      sim
+    intent: agree
+  - action: utter_ask_email
+  - user: |
+      meu email: [email@user.com](email)
+    intent: email
+  - slot_was_set:
+    - email: email@user.com
+  - action: action_setup_conversation
+  - action: vote_form
+  - active_loop: vote_form
+
+- story: User want to participate without email
+  steps:
+  - user: |
+      sim
+    intent: agree
+  - action: utter_ask_email
+  - user: |
+      não
+    intent: disagree
+  - action: action_setup_conversation
+  - action: vote_form
+  - active_loop: vote_form
+
+- story: User provide invalid email
+  steps:
+  - user: |
+      olá
+    intent: start
+  - action: utter_start
+  - user: |
+      sim
+    intent: agree
+  - action: utter_ask_email
+  - user: |
+      @mario
+    intent: invalid_email
+  - action: utter_invalid_email
