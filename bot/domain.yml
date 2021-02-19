@@ -13,9 +13,14 @@ intents:
     use_entities: true
 - start:
     use_entities: true
+- email:
+    use_entities: true
 - out_of_context:
     use_entities: true
-entities: []
+- invalid_email:
+    use_entities: true
+entities: 
+- email
 slots:
   change_comment:
     type: rasa.shared.core.slots.BooleanSlot
@@ -27,6 +32,15 @@ slots:
     initial_value: null
     auto_fill: true
     influence_conversation: false
+  ej_user_token:
+    type: rasa.shared.core.slots.TextSlot
+    initial_value: null
+    auto_fill: true
+    influence_conversation: false
+  email:
+    type: rasa.shared.core.slots.TextSlot
+    initial_value: null
+    auto_fill: true
   conversation_id:
     type: rasa.shared.core.slots.FloatSlot
     initial_value: null
@@ -61,12 +75,16 @@ slots:
     auto_fill: true
     influence_conversation: false
     values:
-    - Concordar
-    - Discordar
-    - Pular
+    - concordar
+    - discordar
+    - pular
 responses:
   utter_start:
   - text: Olá, estou coletando opiniões, gostaria de participar?
+  utter_ask_email:
+  - text: Legal, você gostaria de se identificar pelo seu email? Se sim, já pode enviar que anoto aqui.
+  utter_invalid_email:
+  - text: Não entendi, esse email não parece válido, pode tentar enviar de novo?
   utter_goodbye:
   - text: Agradeço pela participação! Até logo
   utter_vote_received:
