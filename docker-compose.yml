@@ -13,6 +13,7 @@ services:
 
   # ================================= Bot =====================================
   bot:
+    container_name: bot
     build:
       context: .
       dockerfile: ./docker/bot.Dockerfile
@@ -42,7 +43,8 @@ services:
     volumes:
       - ./bot/actions:/bot/actions
     command: sh -c "make actions"
-
+    env_file:
+      - env/auth.env
   # ================================= RASA X ==================================
   # Rasa X container
   x:
@@ -61,6 +63,15 @@ services:
       - actions
     command: sh -c "make x"
 
+  # Duckling HTTP extractor for entities such as email, date, amounts...
+  duckling:
+    container_name: duck
+    image: "rasa/duckling"
+    networks:
+      - bot-network
+    ports:
+      - 6800:8000
+    
 networks: 
   bot-network:
     driver: bridge

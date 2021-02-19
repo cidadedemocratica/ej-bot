@@ -26,6 +26,9 @@ nlu:
     - correto
     - afirmativo
     - concordar
+    - uhum
+    - com certeza
+    - claro
 
 - intent: disagree
   examples: |
@@ -35,6 +38,7 @@ nlu:
     - discordo
     - discordar
     - não concordo
+    - não quero
 
 - intent: pass
   examples: |
@@ -43,6 +47,28 @@ nlu:
     - pulo
     - passa
     - próxima pergunta
+
+- intent: email
+  examples: |
+    - meu email é nome@dominio.com
+    - email@nome.com 
+    - email: esteemail@outroservidor.com
+    - meu email: email@email.com.br
+
+- intent: invalid_email
+  examples: |
+    - @wlor
+    - @algumacoisa.
+    - @nome.
+    - roberto@email
+    - nome@algo
+    - roberto@
+    - maria@
+    - @joao
+    - @joao.
+    - meu email é @nome
+    - email: @maria
+    - meu email: roberto@
 
 - intent: out_of_context
   examples: |
@@ -60,3 +86,4 @@ nlu:
       - tempo
       - stop
       - sair
+

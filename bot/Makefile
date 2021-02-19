@@ -22,7 +22,7 @@ train:
 
 # TESTS
 test:
-	rasa test --out results/
+	rasa test --out results/ --fail-on-prediction-errors
 
 test-actions:
 	python -m pytest

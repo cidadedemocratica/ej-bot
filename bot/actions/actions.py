@@ -5,6 +5,7 @@
 # https://rasa.com/docs/rasa/custom-actions
 
 from typing import Text, List, Any, Dict
+import json
 
 #
 from rasa_sdk import Action, Tracker, FormValidationAction
@@ -12,26 +13,35 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, FollowupAction, EventType
 from rasa_sdk.types import DomainDict
 
+from .ej_connector import API
+
 #
 #
+
+
 class ActionSetupConversation(Action):
     def name(self):
         return "action_setup_conversation"
 
     def run(self, dispatcher, tracker, domain):
-        # TODO: get values from EJ server
         conversation_id = 1
+        user_email = tracker.get_slot("email")
+        if user_email:
+            user = API.create_user(tracker.sender_id, user_email, user_email)
+        else:
+            user = API.create_user(tracker.sender_id)
+        # TODO: get values from EJ server
         number_comments = 2
         number_voted_comments = 1
-        first_comment = "Comment text here"
-        comment_id = 53
+        first_comment = API.get_next_comment(conversation_id, user.token)
         return [
             SlotSet("number_voted_comments", number_voted_comments),
             SlotSet("conversation_id", conversation_id),
             SlotSet("number_comments", number_comments),
-            SlotSet("comment_text", first_comment),
-            SlotSet("current_comment_id", comment_id),
+            SlotSet("comment_text", first_comment["content"]),
+            SlotSet("current_comment_id", first_comment["id"]),
             SlotSet("change_comment", False),
+            SlotSet("ej_user_token", user.token),
             FollowupAction("vote_form"),
         ]
 
@@ -52,14 +62,15 @@ class ActionAskVote(Action):
         if tracker.get_slot("change_comment"):
             # TODO: get values from EJ server
             # next_comment = get_random_comment()
-            new_comment = "novo comentário com outro id"
+            conversation_id = tracker.get_slot("conversation_id")
+            token = tracker.get_slot("ej_user_token")
+            new_comment = API.get_next_comment(conversation_id, token)
             dispatcher.utter_message(text=new_comment, buttons=buttons)
             number_voted_comments = tracker.get_slot("number_comments") + 1
-            comment_id = 22
             return [
                 SlotSet("number_voted_comments", number_voted_comments),
-                SlotSet("comment_text", new_comment),
-                SlotSet("current_comment_id", comment_id),
+                SlotSet("comment_text", new_comment["content"]),
+                SlotSet("current_comment_id", new_comment["id"]),
             ]
         else:
             dispatcher.utter_message(

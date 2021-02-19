@@ -12,7 +12,9 @@ pipeline:
     epochs: 55
   - name: EntitySynonymMapper
   - name: ResponseSelector
-
+  - name: "DucklingHTTPExtractor"
+    url: "http://duck:8000"
+    dimensions: ["email"]
 policies:
   - name: TEDPolicy
     max_history: 10

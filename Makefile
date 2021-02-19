@@ -38,6 +38,7 @@ build-coach:
 
 run-shell: ## Run bot in shell, sucessful when shows "Bot loaded. Type a message and press enter (use '/stop' to exit): "    
 	docker-compose run -d actions make actions
+	docker-compose up -d duckling
 	docker-compose run bot make shell
 
 run-api:
@@ -54,10 +55,11 @@ run-x:
 	docker-compose run --rm --service-ports x make x
 ############################## TESTS ##############################
 test:
-	docker-compose run --rm bot make test
+	docker-compose up -d duckling
+	docker-compose run --name bot --rm bot make test
 
 test-actions:
-	docker-compose run --rm bot make test-actions
+	docker-compose run --rm bot make test-actions -e JWT_SECRET=testing_secret_value
 
 run-test-nlu:
 	docker-compose run --rm bot make test-nlu
