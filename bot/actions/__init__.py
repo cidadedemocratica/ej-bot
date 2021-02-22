@@ -1,1 +1,1 @@
-from .actions import ActionSetupConversation, ActionAskVote, FormValidationAction
+from .actions import ActionSetupConversation, ActionAskVote, ValidateVoteForm

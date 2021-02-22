@@ -12,7 +12,7 @@ stories:
 - story: User utters out of context 
   steps:
   - user: |
-      chega
+      asdfgasd
     intent: out_of_context
   - action: utter_out_of_context
 
@@ -25,7 +25,7 @@ stories:
   - user: |
       não
     intent: disagree
-  - action: utter_goodbye
+  - action: utter_finish
 
 - story: User agree to use email
   steps:
@@ -36,6 +36,7 @@ stories:
   - user: |
       sim
     intent: agree
+  - action: utter_agreed_participation
   - action: utter_ask_email
   - user: |
       meu email: [email@user.com](email)
@@ -49,8 +50,13 @@ stories:
 - story: User want to participate without email
   steps:
   - user: |
+      oi
+    intent: start
+  - action: utter_start
+  - user: |
       sim
     intent: agree
+  - action: utter_agreed_participation
   - action: utter_ask_email
   - user: |
       não
@@ -68,6 +74,7 @@ stories:
   - user: |
       sim
     intent: agree
+  - action: utter_agreed_participation
   - action: utter_ask_email
   - user: |
       @mario
