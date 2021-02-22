@@ -55,6 +55,18 @@ nlu:
     - email: esteemail@outroservidor.com
     - meu email: email@email.com.br
 
+- intent: stop
+  examples: |
+    - para
+    - PARAR 
+    - PAUSAR
+    - parar 
+    - pausa
+    - pausar
+    - chega
+    - sair
+    - stop 
+
 - intent: invalid_email
   examples: |
     - @wlor
@@ -79,11 +91,6 @@ nlu:
       - você é um robô?
       - Fala alguma coisa
       - asdfgasd
-      - chega
-      - para
-      - parar
-      - pausa
-      - tempo
-      - stop
-      - sair
+      - oque
+      - que
 

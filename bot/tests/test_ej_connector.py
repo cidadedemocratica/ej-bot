@@ -50,6 +50,38 @@ class APIClassTest(unittest.TestCase):
         assert response["content"] == response_value["content"]
         assert response["id"] == "1"
 
+    @patch("actions.ej_connector.api.requests.get")
+    def test_get_user_conversation_statistics(self, mock_get):
+        statistics_mock = {
+            "votes": 3,
+            "missing_votes": 6,
+        }
+        mock_get.return_value = Mock(ok=True)
+        mock_get.return_value.json.return_value = statistics_mock
+        response = API.get_user_conversation_statistics(CONVERSATION_ID, TOKEN)
+
+        assert response["votes"] == statistics_mock["votes"]
+        assert response["missing_votes"] == statistics_mock["missing_votes"]
+
+    @patch("actions.ej_connector.api.requests.post")
+    def test_send_user_vote(self, mock_post):
+        vote_response_mock = {"created": True}
+        mock_post.return_value = Mock(ok=True)
+        mock_post.return_value.json.return_value = vote_response_mock
+
+        response = API.send_comment_vote(CONVERSATION_ID, "Pular", TOKEN)
+        assert response["created"]
+
+    @patch("actions.ej_connector.api.requests.post")
+    def test_send_user_comment(self, mock_post):
+        vote_response_mock = {"created": True, "content": "content"}
+        mock_post.return_value = Mock(ok=True)
+        mock_post.return_value.json.return_value = vote_response_mock
+
+        response = API.send_new_comment(CONVERSATION_ID, "content", TOKEN)
+        assert response["created"]
+        assert response["content"] == "content"
+
 
 class UserClassTest(unittest.TestCase):
     """tests actions.ej_connector.user file"""

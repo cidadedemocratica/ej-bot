@@ -5,3 +5,11 @@ rules:
   steps:
   - intent: out_of_context
   - action: utter_out_of_context
+
+- rule: User doesn't want to participate anymore
+  steps:
+  # This unhappy path handles the case of an intent `stop`.
+  - intent: stop
+  - action: utter_stopped
+  - action: utter_finish
+  - active_loop: null

@@ -19,7 +19,9 @@ intents:
     use_entities: true
 - invalid_email:
     use_entities: true
-entities: 
+- stop:
+    use_entities: true
+entities:
 - email
 slots:
   change_comment:
@@ -41,6 +43,7 @@ slots:
     type: rasa.shared.core.slots.TextSlot
     initial_value: null
     auto_fill: true
+    influence_conversation: true
   conversation_id:
     type: rasa.shared.core.slots.FloatSlot
     initial_value: null
@@ -80,17 +83,30 @@ slots:
     - pular
 responses:
   utter_start:
-  - text: Olá, estou coletando opiniões, gostaria de participar?
+  - text: Você topa me dizer o que acha do que o pessoal anda falando? Vai me ajudar bastante a entender o assunto
+  utter_agreed_participation:
+  - text: Oba, muito obrigada!! :) A qualquer momento você pode parar a conversa, é só escrever PARAR.
   utter_ask_email:
   - text: Legal, você gostaria de se identificar pelo seu email? Se sim, já pode enviar que anoto aqui.
   utter_invalid_email:
   - text: Não entendi, esse email não parece válido, pode tentar enviar de novo?
-  utter_goodbye:
-  - text: Agradeço pela participação! Até logo
   utter_vote_received:
-  - text: Seus votos foram computados, agradeço!
+  - text: Registrei sua opinião!
+  - text: Beleza, anotei aqui.
+  - text: Entendo, registrado.
+  - text: Obrigada por participar.
   utter_out_of_context:
   - text: Desculpe, não sei como posso te ajudar com isso.
+  utter_sent_comment:
+  - text: Seu comentário foi adicionado à conversa.
+  utter_send_comment_error:
+  - text: Não foi possível salvar seu comentário, tente novamente mais tarde.
+  utter_voted_all_comments:
+  - text: Obrigada! Você opinou em todos os comentários que existem atualmente sobre esse assunto.
+  utter_stopped:
+  - text: Você já me ajudou bastante, muito obrigada! Vou ficar esperando pra gente conversar mais um pouquinho
+  utter_finish:
+  - text: Volte quando quiser, é só me dar um "Oi". Mas pode deixar que te mantenho por dentro sobre as novidades desse assunto :)
 actions:
 - action_setup_conversation
 - action_ask_vote
