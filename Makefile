@@ -59,7 +59,7 @@ test:
 	docker-compose run --name bot --rm bot make test
 
 test-actions:
-	docker-compose run --rm bot make test-actions -e JWT_SECRET=testing_secret_value
+	docker-compose run --rm bot make test-actions
 
 run-test-nlu:
 	docker-compose run --rm bot make test-nlu
