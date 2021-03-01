@@ -52,6 +52,8 @@ services:
       context: .
       dockerfile: ./docker/bot.Dockerfile
     restart: unless-stopped
+    networks:
+      - bot-network
     volumes:
       - ./bot/:/bot/
       - /bot/tests/:/bot/tests/

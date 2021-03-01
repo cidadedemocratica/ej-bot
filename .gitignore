@@ -11,3 +11,6 @@
 models
 results/
 train_test_split
+.env/
+env
+.env

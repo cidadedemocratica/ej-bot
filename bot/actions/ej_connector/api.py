@@ -1,5 +1,6 @@
 import os
 import requests
+import json
 from .user import User
 
 HEADERS = {
@@ -10,6 +11,7 @@ HOST = os.getenv("EJ_HOST")
 API_URL = f"{HOST}/api/v1"
 REGISTRATION_URL = f"{HOST}/rest-auth/registration/"
 VOTES_URL = f"{API_URL}/votes/"
+COMMENTS_URL = f"{API_URL}/comments/"
 
 
 def conversation_url(conversation_id):
@@ -56,3 +58,33 @@ class API:
         comment_url_as_list = comment["links"]["self"].split("/")
         comment["id"] = comment_url_as_list[len(comment_url_as_list) - 2]
         return comment
+
+    def get_user_conversation_statistics(conversation_id, token):
+        url = user_statistics_url(conversation_id)
+        response = requests.get(url, headers=auth_headers(token))
+        return response.json()
+
+    def send_comment_vote(comment_id, choice, token):
+        body = json.dumps(
+            {
+                "comment": comment_id,
+                "choice": VOTE_CHOICES[choice],
+            }
+        )
+        response = requests.post(
+            VOTES_URL,
+            data=body,
+            headers=auth_headers(token),
+        )
+        return response.json()
+
+    def send_new_comment(conversation_id, content, token):
+        body = json.dumps(
+            {"content": content, "conversation": conversation_id, "status": "pending"}
+        )
+        response = requests.post(
+            COMMENTS_URL,
+            data=body,
+            headers=auth_headers(token),
+        )
+        return response.json()
