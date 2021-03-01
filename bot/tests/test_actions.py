@@ -1,5 +1,6 @@
 import pytest
 import unittest
+import os
 from unittest.mock import Mock, patch
 from typing import Text, List, Any, Dict
 
@@ -13,6 +14,12 @@ STATISTICS = {
     "votes": 0,
     "missing_votes": 6,
 }
+
+
+@pytest.fixture(autouse=True)
+def mock_settings_env_vars():
+    with patch.dict(os.environ, {"JWT_SECRET": "testing_secret_value"}):
+        yield
 
 
 @pytest.fixture

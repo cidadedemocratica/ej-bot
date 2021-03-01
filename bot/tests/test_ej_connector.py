@@ -1,6 +1,7 @@
 import pytest
 import unittest
 from unittest.mock import Mock, patch
+import os
 import json
 
 from actions.ej_connector import API, User
@@ -17,6 +18,12 @@ CONVERSATION_ID = 1
 TOKEN = "mock_token_value"
 EMAIL = "email@email.com"
 SENDER_ID = "mock_rasa_sender_id"
+
+
+@pytest.fixture(autouse=True)
+def mock_settings_env_vars():
+    with patch.dict(os.environ, {"JWT_SECRET": "testing_secret_value"}):
+        yield
 
 
 class APIClassTest(unittest.TestCase):
