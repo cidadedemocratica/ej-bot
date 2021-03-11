@@ -24,7 +24,7 @@ class ActionSetupConversation(Action):
         return "action_setup_conversation"
 
     def run(self, dispatcher, tracker, domain):
-        conversation_id = 1
+        conversation_id = 56
         user_email = tracker.get_slot("email")
 
         if user_email:
