@@ -57,7 +57,7 @@ def test_action_setup_conversation(dispatcher, domain, tracker):
             events = action.run(dispatcher, tracker, domain)
             expected_events = [
                 SlotSet("number_voted_comments", comment_statistics_mock["votes"]),
-                SlotSet("conversation_id", 1),
+                SlotSet("conversation_id", 56),
                 SlotSet(
                     "number_comments",
                     comment_statistics_mock["missing_votes"]
