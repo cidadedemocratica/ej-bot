@@ -1,6 +1,12 @@
 version: '3'
 
 services:
+  webchat:
+    image: nginx
+    volumes:
+      - ./webchat/:/usr/share/nginx/html/
+    ports:
+      - 8001:80
   # =============================== Coach =================================
   # All the models are trained by this coach.
   coach:
@@ -28,6 +34,10 @@ services:
       - 5005:5005
     depends_on:
       - actions
+    environment:
+      RASA_DUCKLING_HTTP_URL: http://duck:8000
+      ACTIONS_SERVER_URL: http://actions:5055/webhook
+      RASA_SERVER_URL: http://bot:5002/api
 
   # ================================= Actions =================================
   # Rasa middleware used to connect with external APIs.
@@ -43,11 +53,15 @@ services:
     volumes:
       - ./bot/actions:/bot/actions
     command: sh -c "make actions"
+    environment:
+      JWT_SECRET: RRrWj+H2QEqV9O7iKBrU0zuB
+      EJ_HOST: https://ejplatform.pencillabs.com.br
     env_file:
       - env/auth.env
   # ================================= RASA X ==================================
   # Rasa X container
   x:
+    container_name: x
     build:
       context: .
       dockerfile: ./docker/bot.Dockerfile
