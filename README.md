@@ -66,3 +66,12 @@ Abaixo, segue em destaque na estrutura de pastas os arquivos que serão mais uti
 ```
 
 
+
+# WebChat
+
+Você pode simular uma conversa com o ejBot a partir de um webchat.
+
+1. Suba o container do nginx que serve a pagina do webchat: `make run-webchat`;
+2. Acesse a pagina em `http://localhost:8001/`;
+
+É provável que você precise retreinar o bot, e recriar os containers da API para que a configuração do canal socketio seja aplicada.

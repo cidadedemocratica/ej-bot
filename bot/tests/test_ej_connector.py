@@ -14,7 +14,7 @@ from actions.ej_connector.api import (
     user_pending_comments_route,
 )
 
-CONVERSATION_ID = 1
+CONVERSATION_ID = "1"
 TOKEN = "mock_token_value"
 EMAIL = "email@email.com"
 SENDER_ID = "mock_rasa_sender_id"

@@ -8,6 +8,7 @@ stories:
       oi
     intent: start
   - action: utter_start
+  - action: utter_ask_user_particpate
 
 - story: User utters out of context 
   steps:
@@ -22,9 +23,13 @@ stories:
       olá
     intent: start
   - action: utter_start
+  - action: utter_ask_user_particpate
   - user: |
       não
     intent: disagree
+  - action: utter_disagreed_participation
+  - action: utter_stopped
+  - action: utter_next_conversation
   - action: utter_finish
 
 - story: User agree to use email
@@ -33,11 +38,14 @@ stories:
       oi
     intent: start
   - action: utter_start
+  - action: utter_ask_user_particpate
   - user: |
       sim
     intent: agree
   - action: utter_agreed_participation
   - action: utter_ask_email
+  - action: utter_explain_ask_email
+  - action: utter_email_is_optional
   - user: |
       meu email: [email@user.com](email)
     intent: email
@@ -53,11 +61,14 @@ stories:
       oi
     intent: start
   - action: utter_start
+  - action: utter_ask_user_particpate
   - user: |
       sim
     intent: agree
   - action: utter_agreed_participation
   - action: utter_ask_email
+  - action: utter_explain_ask_email
+  - action: utter_email_is_optional
   - user: |
       não
     intent: disagree
@@ -71,6 +82,7 @@ stories:
       olá
     intent: start
   - action: utter_start
+  - action: utter_ask_user_particpate
   - user: |
       sim
     intent: agree
@@ -80,3 +92,4 @@ stories:
       @mario
     intent: invalid_email
   - action: utter_invalid_email
+  - action: utter_ask_email_again
