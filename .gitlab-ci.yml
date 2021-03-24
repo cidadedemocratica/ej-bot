@@ -7,6 +7,7 @@ variables:
 stages:
   - style
   - test
+  - deploy
 
 style:
   before_script:
@@ -34,3 +35,13 @@ test:
     - rasa test nlu --nlu ./data/nlu.yml --cross-validation
     - rasa test core --fail-on-prediction-errors --out results/results-core-test
     - python3 -m pytest
+
+deploy:
+    stage: deploy
+    script:
+        - /bin/sh -c 'git clone -b stable --depth=1 https://gitlab+deploy-token-155341:xWz-bGxYnvTLcZCzsHEG@gitlab.com/pencillabs/infraestructure/core.git'
+        - cd core
+        - bin/pencilctl build rasa -e dev --no-cache && bin/pencilctl push rasa -e dev
+    only:
+        refs:
+            - master
