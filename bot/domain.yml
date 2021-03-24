@@ -21,6 +21,8 @@ intents:
     use_entities: true
 - stop:
     use_entities: true
+- welcome:
+    use_entities: true
 entities:
 - email
 slots:
@@ -78,41 +80,75 @@ slots:
     auto_fill: true
     influence_conversation: false
     values:
-    - concordar
-    - discordar
-    - pular
+      - concordar
+      - discordar
+      - pular
+      - parar
 responses:
+  utter_welcome:
+  - text: Olá,  Muito prazer, eu sou a Duda!
   utter_start:
-  - text: Você topa me dizer o que acha do que o pessoal anda falando? Vai me ajudar bastante a entender o assunto
+  - text: Eu estava querendo saber a opinião de outras pessoas a respeito de [assunto].
+  utter_ask_user_particpate:
+  - text: Topa um bate-papo comigo sobre o assunto?
   utter_agreed_participation:
-  - text: Oba, muito obrigada!! :) A qualquer momento você pode parar a conversa, é só escrever PARAR.
+  - text: Ah maravilha 😄
+  - text: Eu agradeço muito!
+  utter_disagreed_participation:
+  - text: Poooxa ☹️
+  - text: Ah que pena ☹️
+  utter_stop_conversation:
+  - text: Se você não quiser mais conversar comigo ou quiser terminar conversa é so me falar tá?!(é só escrever PARAR)
   utter_ask_email:
-  - text: Legal, você gostaria de se identificar pelo seu email? Se sim, já pode enviar que anoto aqui.
+    - text: Você se importa de me passar seu email? 
+  utter_explain_ask_email:
+  - text: Eu juro que não vou mandar spam rs. É só uma forma de eu poder ligar você a sua opinião.
+  utter_email_is_optional:
+    - text: Ah e se você não quiser não tem problema, eu mantenho a sua identidade secreta 🤫 kkkk
+  utter_send_email:
+    - text: Já pode mandar seu email aqui 
   utter_invalid_email:
-  - text: Não entendi, esse email não parece válido, pode tentar enviar de novo?
+  - text: Hmmm acho que você escreveu alguma coisa errada 😕
+  utter_ask_email_again:
+  - text: Pode enviar seu email de novo, por favor?
+  utter_got_email:
+  - text: Já anotei aqui o seu email, obrigada 😉
+  utter_user_want_anonymous:
+  - text: Beleza, vamos prosseguir!
   utter_vote_received:
-  - text: Registrei sua opinião!
+  - text: Anotado!
   - text: Beleza, anotei aqui.
   - text: Entendo, registrado.
-  - text: Obrigada por participar.
   utter_out_of_context:
-  - text: Desculpe, não sei como posso te ajudar com isso.
+  - text: Desculpe, não sei se entendi 😕
   utter_sent_comment:
-  - text: Seu comentário foi adicionado à conversa.
+  - text: Certo, já anotei seu comentário, muito obrigada pela sua contribuição!!
   utter_send_comment_error:
-  - text: Não foi possível salvar seu comentário, tente novamente mais tarde.
+  - text: Hmmm não sei o que aconteceu. \nEu não consegui salvar seu comentário
+  utter_ask_send_comment_again:
+  - text: Faz assim, tenta me mandar ele novamente mais tarde, pode ser?!
   utter_voted_all_comments:
-  - text: Obrigada! Você opinou em todos os comentários que existem atualmente sobre esse assunto.
+  - text: Noossa 😮😮😮 Você opinou sobre todos os comentários que eu tinha aqui!
+  utter_thanks_participation:
+  - text: Eu fico muito feliz por você ter participado 🤗!
+  - text: Muito obrigada pela sua participação 🤗🤗🤗
   utter_stopped:
-  - text: Você já me ajudou bastante, muito obrigada! Vou ficar esperando pra gente conversar mais um pouquinho
+  - text: Só de você ter me respondido ja me ajudou, muito obrigada!
+  utter_next_conversation:
+  - text: Depois conversamos mais 😘
   utter_finish:
-  - text: Volte quando quiser, é só me dar um "Oi". Mas pode deixar que te mantenho por dentro sobre as novidades desse assunto :)
+  - text: Ah quando quiser trocar uma ideia é só me mandar um "Oi".
+  utter_goodbye:
+  - text: Pode deixar que te mantenho por dentro sobre as novidades desse assunto
 actions:
-- action_setup_conversation
-- action_ask_vote
-- validate_vote_form
+  - action_setup_conversation
+  - action_ask_vote
+  - action_follow_up_form
+  - validate_vote_form
+
 forms:
   vote_form:
     vote:
-    - type: from_text
+      - type: from_text
+
 e2e_actions: []

@@ -41,6 +41,7 @@ def auth_headers(token):
 
 
 class API:
+    @staticmethod
     def create_user(sender_id, name="Participante anônimo", email=""):
         user = User(sender_id, name, email)
         response = requests.post(
@@ -51,6 +52,7 @@ class API:
         user.token = response.json()["key"]
         return user
 
+    @staticmethod
     def get_next_comment(conversation_id, token):
         url = conversation_random_comment_url(conversation_id)
         response = requests.get(url, headers=auth_headers(token))
@@ -59,11 +61,13 @@ class API:
         comment["id"] = comment_url_as_list[len(comment_url_as_list) - 2]
         return comment
 
+    @staticmethod
     def get_user_conversation_statistics(conversation_id, token):
         url = user_statistics_url(conversation_id)
         response = requests.get(url, headers=auth_headers(token))
         return response.json()
 
+    @staticmethod
     def send_comment_vote(comment_id, choice, token):
         body = json.dumps(
             {
@@ -78,6 +82,7 @@ class API:
         )
         return response.json()
 
+    @staticmethod
     def send_new_comment(conversation_id, content, token):
         body = json.dumps(
             {"content": content, "conversation": conversation_id, "status": "pending"}

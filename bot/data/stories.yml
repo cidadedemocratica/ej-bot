@@ -1,67 +1,84 @@
 version: "2.0"
 
 stories:
+  - story: Greet user
+    steps:
+      - intent: start
+      - action: utter_start
+      - action: utter_ask_user_particpate
 
-- story: Greet user
-  steps:
-  - intent: start
-  - action: utter_start
+  - story: User don't want to participate sad path
+    steps:
+      - intent: start
+      - action: utter_start
+      - action: utter_ask_user_particpate
+      - intent: disagree
+      - action: utter_disagreed_participation
+      - action: utter_stopped
+      - action: utter_next_conversation
+      - action: utter_finish
 
-- story: User don't want to participate sad path
-  steps:
-  - intent: start
-  - action: utter_start
-  - intent: disagree
-  - action: utter_finish
+  - story: Activate vote form with user email
+    steps:
+      - intent: agree
+      - action: utter_agreed_participation
+      - action: utter_ask_email
+      - action: utter_explain_ask_email
+      - action: utter_email_is_optional
+      - action: utter_send_email
+      - intent: email
+        entities:
+          - email
+      - action: action_setup_conversation
+      - action: utter_stop_conversation
+      - action: vote_form
+      - active_loop: vote_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_follow_up_form
+      - action: utter_thanks_participation
 
-- story: User wants to participate
-  steps:
-  - intent: start
-  - action: utter_start
-  - intent: agree
-  - action: utter_agreed_participation
-  - action: utter_ask_email
+  - story: Activate vote form without user email
+    steps:
+      - intent: agree
+      - action: utter_agreed_participation
+      - action: utter_ask_email
+      - action: utter_explain_ask_email
+      - action: utter_email_is_optional
+      - action: utter_send_email
+      - intent: disagree
+      - action: action_setup_conversation
+      - action: utter_stop_conversation
+      - action: vote_form
+      - active_loop: vote_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_follow_up_form
+      - action: utter_thanks_participation
 
-- story: Activate vote form with user email
-  steps:
-  - intent: agree
-  - action: utter_agreed_participation
-  - action: utter_ask_email
-  - intent: email
-    entities:
-    - email
-  - action: action_setup_conversation
-  - action: vote_form
-  - active_loop: vote_form
-  - active_loop: null
-  - action: utter_finish
+  - story: User provides invalid email
+    steps:
+      - intent: invalid_email
+      - action: utter_invalid_email
+      - action: utter_ask_email_again
+      - intent: email
+        entities:
+          - email
+      - action: action_setup_conversation
+      - action: utter_stop_conversation
+      - action: vote_form
+      - active_loop: vote_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: action_follow_up_form
+      - action: utter_thanks_participation
 
-
-- story: Activate vote form without user email
-  steps:
-  - intent: agree
-  - action: utter_agreed_participation
-  - action: utter_ask_email
-  - intent: disagree
-  - action: action_setup_conversation
-  - action: vote_form
-  - active_loop: vote_form
-  - active_loop: null
-  - action: utter_finish
-
-- story: User provides invalid email
-  steps:
-  - intent: agree
-  - action: utter_agreed_participation
-  - action: utter_ask_email
-  - intent: invalid_email
-  - action: utter_invalid_email
-  - intent: email
-    entities:
-    - email
-  - action: action_setup_conversation
-  - action: vote_form
-  - active_loop: vote_form
-  - active_loop: null
-  - action: utter_finish
-  
+  - story: Goodbye happy path
+    steps:
+      - action: utter_thanks_participation
+      - action: utter_goodbye
+      - action: utter_next_conversation
+      - action: utter_finish

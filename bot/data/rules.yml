@@ -1,15 +1,21 @@
 version: "2.0"
 
 rules:
-- rule: User ask a out of context question
-  steps:
-  - intent: out_of_context
-  - action: utter_out_of_context
+  - rule: User ask a out of context question
+    steps:
+      - intent: out_of_context
+      - action: utter_out_of_context
 
-- rule: User doesn't want to participate anymore
-  steps:
-  # This unhappy path handles the case of an intent `stop`.
-  - intent: stop
-  - action: utter_stopped
-  - action: utter_finish
-  - active_loop: null
+  - rule: User doesn't want to participate anymore
+    steps:
+      # This unhappy path handles the case of an intent `stop`.
+      - intent: stop
+      - action: utter_stopped
+      - action: utter_next_conversation
+      - action: utter_finish
+      - active_loop: null
+
+  - rule: Welcome user
+    steps:
+      - intent: welcome
+      - action: utter_welcome
