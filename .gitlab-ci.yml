@@ -39,6 +39,8 @@ test:
 
 deploy:
     stage: deploy
+    before_script:
+     - apt update && apt-get -y install bash git
     script:
         - /bin/sh -c 'git clone -b stable --depth=1 https://gitlab+deploy-token-155341:xWz-bGxYnvTLcZCzsHEG@gitlab.com/pencillabs/infraestructure/core.git'
         - cd core
