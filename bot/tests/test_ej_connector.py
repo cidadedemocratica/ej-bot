@@ -12,6 +12,7 @@ from actions.ej_connector.api import (
     user_statistics_url,
     user_comments_route,
     user_pending_comments_route,
+    EJCommunicationError,
 )
 
 CONVERSATION_ID = "1"
@@ -45,6 +46,20 @@ class APIClassTest(unittest.TestCase):
         response = API.create_user(SENDER_ID, EMAIL, EMAIL)
         assert response.token == response_value["key"]
 
+    @patch("actions.ej_connector.api.requests.post")
+    def test_create_user_returns_invalid_response(self, mock_post):
+        response_value = {"error": "key_value"}
+        mock_post.return_value = Mock(ok=True)
+        mock_post.return_value.json.return_value = response_value
+        with pytest.raises(EJCommunicationError):
+            API.create_user(SENDER_ID, EMAIL, EMAIL)
+
+    @patch("actions.ej_connector.api.requests.post")
+    def test_create_user_returns_forbidden_response(self, mock_post):
+        mock_post.return_value = Mock(status=401), "forbidden"
+        with pytest.raises(EJCommunicationError):
+            API.create_user(SENDER_ID, EMAIL, EMAIL)
+
     @patch("actions.ej_connector.api.requests.get")
     def test_get_random_comment_in_ej(self, mock_get):
         response_value = {
@@ -56,6 +71,22 @@ class APIClassTest(unittest.TestCase):
         response = API.get_next_comment(CONVERSATION_ID, TOKEN)
         assert response["content"] == response_value["content"]
         assert response["id"] == "1"
+
+    @patch("actions.ej_connector.api.requests.get")
+    def test_get_random_comment_in_ej_invalid_response(self, mock_get):
+        response_value = {
+            "invalid": "This is not the comment text",
+        }
+        mock_get.return_value = Mock(ok=True)
+        mock_get.return_value.json.return_value = response_value
+        with pytest.raises(EJCommunicationError):
+            API.get_next_comment(CONVERSATION_ID, TOKEN)
+
+    @patch("actions.ej_connector.api.requests.get")
+    def test_get_random_comment_in_ej_forbidden_response(self, mock_get):
+        mock_get.return_value = Mock(status=401), "forbidden"
+        with pytest.raises(EJCommunicationError):
+            API.get_next_comment(CONVERSATION_ID, TOKEN)
 
     @patch("actions.ej_connector.api.requests.get")
     def test_get_user_conversation_statistics(self, mock_get):
@@ -70,6 +101,12 @@ class APIClassTest(unittest.TestCase):
         assert response["votes"] == statistics_mock["votes"]
         assert response["missing_votes"] == statistics_mock["missing_votes"]
 
+    @patch("actions.ej_connector.api.requests.get")
+    def test_get_user_conversation_statistics_error_status(self, mock_get):
+        mock_get.return_value = Mock(status=404), "not found"
+        with pytest.raises(EJCommunicationError):
+            API.get_user_conversation_statistics(CONVERSATION_ID, TOKEN)
+
     @patch("actions.ej_connector.api.requests.post")
     def test_send_user_vote(self, mock_post):
         vote_response_mock = {"created": True}
@@ -80,6 +117,12 @@ class APIClassTest(unittest.TestCase):
         assert response["created"]
 
     @patch("actions.ej_connector.api.requests.post")
+    def test_send_user_vote_error_status(self, mock_post):
+        mock_post.return_value = Mock(status=401), "forbidden"
+        with pytest.raises(EJCommunicationError):
+            API.send_comment_vote(CONVERSATION_ID, "Pular", TOKEN)
+
+    @patch("actions.ej_connector.api.requests.post")
     def test_send_user_comment(self, mock_post):
         vote_response_mock = {"created": True, "content": "content"}
         mock_post.return_value = Mock(ok=True)
@@ -88,6 +131,12 @@ class APIClassTest(unittest.TestCase):
         response = API.send_new_comment(CONVERSATION_ID, "content", TOKEN)
         assert response["created"]
         assert response["content"] == "content"
+
+    @patch("actions.ej_connector.api.requests.post")
+    def test_send_user_comment_error_status(self, mock_post):
+        mock_post.return_value = Mock(status=404), "conversation not found"
+        with pytest.raises(EJCommunicationError):
+            API.send_new_comment(CONVERSATION_ID, "content", TOKEN)
 
 
 class UserClassTest(unittest.TestCase):

@@ -14,6 +14,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, FollowupAction, EventType
 from rasa_sdk.types import DomainDict
 import logging
+from .ej_connector import API, EJCommunicationError
 
 logger = logging.getLogger(__name__)
 
@@ -29,16 +30,29 @@ class ActionSetupConversation(Action):
     def run(self, dispatcher, tracker, domain):
         conversation_id = 56
         user_email = tracker.get_slot("email")
-        last_intent = tracker.latest_message["intent"].get("name")
+        try:
+            last_intent = tracker.latest_message["intent"].get("name")
 
-        if user_email and last_intent == "email":
-            user = API.create_user(tracker.sender_id, user_email, user_email)
-            if user:
-                dispatcher.utter_message(template="utter_got_email")
-        else:
-            user = API.create_user(tracker.sender_id)
-            if user:
-                dispatcher.utter_message(template="utter_user_want_anonymous")
+            if user_email and last_intent == "email":
+                user = API.create_user(tracker.sender_id, user_email, user_email)
+                if user:
+                    dispatcher.utter_message(template="utter_got_email")
+            else:
+                user = API.create_user(tracker.sender_id)
+                if user:
+                    dispatcher.utter_message(template="utter_user_want_anonymous")
+            statistics = API.get_user_conversation_statistics(
+                conversation_id, user.token
+            )
+            first_comment = API.get_next_comment(conversation_id, user.token)
+        except EJCommunicationError:
+            dispatcher.utter_message(
+                text="Opa, parece que não estou conseguindo acessar nosso servidor."
+            )
+            dispatcher.utter_message(
+                text="Tive um problema técnico, por favor tente participar mais tarde."
+            )
+            return [FollowupAction("action_restart")]
 
         statistics = API.get_user_conversation_statistics(conversation_id, user.token)
         first_comment = API.get_next_comment(conversation_id, user.token)
