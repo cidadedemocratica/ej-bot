@@ -80,10 +80,10 @@ slots:
     auto_fill: true
     influence_conversation: false
     values:
-      - concordar
-      - discordar
-      - pular
-      - parar
+    - concordar
+    - discordar
+    - pular
+    - parar
 responses:
   utter_welcome:
   - text: Olá,  Muito prazer, eu sou a Duda!
@@ -100,13 +100,13 @@ responses:
   utter_stop_conversation:
   - text: Se você não quiser mais conversar comigo ou quiser terminar conversa é so me falar tá?!(é só escrever PARAR)
   utter_ask_email:
-    - text: Você se importa de me passar seu email? 
+  - text: Você se importa de me passar seu email?
   utter_explain_ask_email:
   - text: Eu juro que não vou mandar spam rs. É só uma forma de eu poder ligar você a sua opinião.
   utter_email_is_optional:
-    - text: Ah e se você não quiser não tem problema, eu mantenho a sua identidade secreta 🤫 kkkk
+  - text: Ah e se você não quiser não tem problema, eu mantenho a sua identidade secreta 🤫 kkkk
   utter_send_email:
-    - text: Já pode mandar seu email aqui 
+  - text: Já pode mandar seu email aqui
   utter_invalid_email:
   - text: Hmmm acho que você escreveu alguma coisa errada 😕
   utter_ask_email_again:
@@ -141,14 +141,12 @@ responses:
   utter_goodbye:
   - text: Pode deixar que te mantenho por dentro sobre as novidades desse assunto
 actions:
-  - action_setup_conversation
-  - action_ask_vote
-  - action_follow_up_form
-  - validate_vote_form
-
+- action_setup_conversation
+- action_ask_vote
+- action_follow_up_form
+- validate_vote_form
 forms:
   vote_form:
     vote:
-      - type: from_text
-
+    - type: from_text
 e2e_actions: []
