@@ -17,6 +17,7 @@ stories:
       - action: utter_stopped
       - action: utter_next_conversation
       - action: utter_finish
+      - action: action_restart
 
   - story: Activate vote form with user email
     steps:
