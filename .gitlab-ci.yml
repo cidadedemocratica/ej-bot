@@ -16,7 +16,6 @@ style:
   script:
     - black --check .
 
-
 test:
   before_script:
     - apt-get update
@@ -31,19 +30,19 @@ test:
     - cd bot
     - rasa train
   stage: test
-  script: 
+  script:
     - rasa test nlu --nlu ./data/nlu.yml --cross-validation
     - rasa test core --fail-on-prediction-errors --out results/results-core-test
     - python3 -m pytest
 
 deploy:
-    stage: deploy
-    before_script:
-     - apt update && apt-get -y install bash git
-    script:
-        - /bin/sh -c 'git clone -b stable --depth=1 https://gitlab+deploy-token-155341:xWz-bGxYnvTLcZCzsHEG@gitlab.com/pencillabs/infraestructure/core.git'
-        - cd core
-        - bin/pencilctl build rasa -e dev -c prod --no-cache && bin/pencilctl push rasa -e dev -c prod
-    only:
-        refs:
-            - master
+  stage: deploy
+  before_script:
+    - apt update && apt-get -y install bash git
+  script:
+    - /bin/sh -c 'git clone -b stable --depth=1 https://gitlab+deploy-token-155341:xWz-bGxYnvTLcZCzsHEG@gitlab.com/pencillabs/infraestructure/core.git'
+    - cd core
+    - bin/pencilctl build rasa -e dev -c prod --no-cache --push
+  only:
+    refs:
+      - master
