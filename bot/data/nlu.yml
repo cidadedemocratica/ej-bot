@@ -1,120 +1,116 @@
 version: "2.0"
-
 nlu:
-  - intent: welcome
-    examples: |
-      - novo usuario conectado
-
-  - intent: start
-    examples: |
-      - começar a conversar
-      - oi
-      - olá
-      - hey
-      - Bom dia
-      - Boa tarde
-      - Boa noite
-      - Oi, tudo bem?
-      - alo
-      - ois
-      - oie
-      - prazer
-      - muito prazer
-
-  - intent: agree
-    examples: |
-      - sim
-      - concordo
-      - penso igual
-      - sou a favor
-      - de acordo
-      - positivo
-      - correto
-      - afirmativo
-      - concordar
-      - uhum
-      - com certeza
-      - claro
-      - topo
-      - topo sim
-      - ok
-      - pode ser
-      - bora
-
-  - intent: disagree
-    examples: |
-      - não
-      - nunca
-      - jamais
-      - discordo
-      - discordar
-      - não concordo
-      - não quero
-      - não topo
-      - tô de boa
-      - nem
-      - não obg
-      - nao to de boa
-
-
-  - intent: pass
-    examples: |
-      - não sei
-      - pular
-      - pulo
-      - passa
-      - próxima pergunta
-
-  - intent: email
-    examples: |
-      - meu email é nome@dominio.com
-      - email@nome.com
-      - email: esteemail@outroservidor.com
-      - meu email: email@email.com.br
-      - tudo bem, meu email é email@nome.com
-      - esse é o meu email email@nome.com
-      - anota ai meu email email@nome.com
-
-  - intent: stop
-    examples: |
-      - para
-      - PARAR
-      - PAUSAR
-      - parar
-      - pausa
-      - pausar
-      - chega
-      - sair
-      - SAIR
-      - stop
-      - não quero mais conversar
-      - podemos parar
-      - cansei de responder
-      - não quero mais responder
-
-  - intent: invalid_email
-    examples: |
-      - @wlor
-      - @algumacoisa.
-      - @nome.
-      - roberto@email
-      - nome@algo
-      - roberto@
-      - maria@
-      - @joao
-      - @joao.
-      - meu email é @nome
-      - email: @maria
-      - meu email: roberto@
-
-  - intent: out_of_context
-    examples: |
-      - 4 + 2 = ?
-      - Queria pedir uma pizza
-      - Como tá o tempo?
-      - Como vc tá?
-      - você é um robô?
-      - Fala alguma coisa
-      - asdfgasd
-      - oque
-      - que
+- intent: welcome
+  examples: |
+    - novo usuario conectado
+- intent: start
+  examples: |
+    - começar a conversar
+    - oi
+    - olá
+    - hey
+    - Bom dia
+    - Boa tarde
+    - Boa noite
+    - Oi, tudo bem?
+    - alo
+    - ois
+    - oie
+    - prazer
+    - muito prazer
+- intent: agree
+  examples: |
+    - sim
+    - concordo
+    - penso igual
+    - sou a favor
+    - de acordo
+    - positivo
+    - correto
+    - afirmativo
+    - concordar
+    - uhum
+    - com certeza
+    - claro
+    - topo
+    - topo sim
+    - ok
+    - pode ser
+    - bora
+    - Concordar
+- intent: disagree
+  examples: |
+    - não
+    - nunca
+    - jamais
+    - discordo
+    - discordar
+    - não concordo
+    - não quero
+    - não topo
+    - tô de boa
+    - nem
+    - não obg
+    - nao to de boa
+    - Discordar
+- intent: pass
+  examples: |
+    - não sei
+    - pular
+    - pulo
+    - passa
+    - próxima pergunta
+    - Pular
+- intent: email
+  examples: |
+    - meu email é nome@dominio.com
+    - email@nome.com
+    - email: esteemail@outroservidor.com
+    - meu email: email@email.com.br
+    - tudo bem, meu email é email@nome.com
+    - esse é o meu email email@nome.com
+    - anota ai meu email email@nome.com
+    - sh@email.com.br
+    - meu email@email.com.br
+    - nos@email.com.br
+- intent: stop
+  examples: |
+    - para
+    - PARAR
+    - PAUSAR
+    - parar
+    - pausa
+    - pausar
+    - chega
+    - sair
+    - SAIR
+    - stop
+    - não quero mais conversar
+    - podemos parar
+    - cansei de responder
+    - não quero mais responder
+- intent: invalid_email
+  examples: |
+    - @wlor
+    - @algumacoisa.
+    - @nome.
+    - roberto@email
+    - nome@algo
+    - roberto@
+    - maria@
+    - @joao
+    - @joao.
+    - meu email é @nome
+    - email: @maria
+    - meu email: roberto@
+- intent: out_of_context
+  examples: |
+    - 4 + 2 = ?
+    - Queria pedir uma pizza
+    - Como tá o tempo?
+    - Como vc tá?
+    - você é um robô?
+    - Fala alguma coisa
+    - asdfgasd
+    - oque
+    - que

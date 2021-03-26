@@ -34,8 +34,6 @@ stories:
       - action: vote_form
       - active_loop: vote_form
       - active_loop: null
-      - slot_was_set:
-          - requested_slot: null
       - action: action_follow_up_form
       - action: utter_thanks_participation
 
@@ -53,8 +51,6 @@ stories:
       - action: vote_form
       - active_loop: vote_form
       - active_loop: null
-      - slot_was_set:
-          - requested_slot: null
       - action: action_follow_up_form
       - action: utter_thanks_participation
 
@@ -71,8 +67,6 @@ stories:
       - action: vote_form
       - active_loop: vote_form
       - active_loop: null
-      - slot_was_set:
-          - requested_slot: null
       - action: action_follow_up_form
       - action: utter_thanks_participation
 
@@ -82,3 +76,4 @@ stories:
       - action: utter_goodbye
       - action: utter_next_conversation
       - action: utter_finish
+      - action: action_restart
