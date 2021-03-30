@@ -21,6 +21,20 @@ logger = logging.getLogger(__name__)
 
 #
 #
+class ActionGetConversationTitle(Action):
+    def name(self):
+        return "action_get_conversation_title"
+
+    def run(self, dispatcher, tracker, domain):
+        conversation_id = 56
+        logger.debug("INFO")
+        logger.debug(conversation_id)
+        conversation_title = API.get_conversation_title(conversation_id)
+        logger.debug(conversation_title)
+        return [
+            SlotSet("conversation_title", conversation_title),
+            SlotSet("conversation_id", conversation_id),
+        ]
 
 
 class ActionSetupConversation(Action):
@@ -28,8 +42,8 @@ class ActionSetupConversation(Action):
         return "action_setup_conversation"
 
     def run(self, dispatcher, tracker, domain):
-        conversation_id = 56
         user_email = tracker.get_slot("email")
+        conversation_id = tracker.get_slot("conversation_id")
         try:
             last_intent = tracker.latest_message["intent"].get("name")
 
@@ -64,7 +78,6 @@ class ActionSetupConversation(Action):
         logger.debug("INFO")
         return [
             SlotSet("number_voted_comments", statistics["votes"]),
-            SlotSet("conversation_id", conversation_id),
             SlotSet(
                 "number_comments", statistics["missing_votes"] + statistics["votes"]
             ),

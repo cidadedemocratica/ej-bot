@@ -84,11 +84,16 @@ slots:
     - discordar
     - pular
     - parar
+  conversation_title:
+    type: rasa.shared.core.slots.TextSlot
+    initial_value: null
+    auto_fill: true
+    influence_conversation: false
 responses:
   utter_welcome:
   - text: Olá,  Muito prazer, eu sou a Duda!
   utter_start:
-  - text: Eu estava querendo saber a opinião de outras pessoas a respeito de [assunto].
+  - text: Eu estava querendo saber a opinião de outras pessoas a respeito de {conversation_title}.
   utter_ask_user_particpate:
   - text: Topa um bate-papo comigo sobre o assunto?
   utter_agreed_participation:
@@ -141,6 +146,7 @@ responses:
   utter_goodbye:
   - text: Pode deixar que te mantenho por dentro sobre as novidades desse assunto
 actions:
+- action_get_conversation_title
 - action_setup_conversation
 - action_ask_vote
 - action_follow_up_form
