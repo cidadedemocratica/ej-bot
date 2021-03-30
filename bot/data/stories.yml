@@ -4,12 +4,14 @@ stories:
   - story: Greet user
     steps:
       - intent: start
+      - action: action_get_conversation_title
       - action: utter_start
       - action: utter_ask_user_particpate
 
   - story: User don't want to participate sad path
     steps:
       - intent: start
+      - action: action_get_conversation_title
       - action: utter_start
       - action: utter_ask_user_particpate
       - intent: disagree

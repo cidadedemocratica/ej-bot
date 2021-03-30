@@ -61,6 +61,33 @@ class APIClassTest(unittest.TestCase):
             API.create_user(SENDER_ID, EMAIL, EMAIL)
 
     @patch("actions.ej_connector.api.requests.get")
+    def test_get_conversation_title_in_ej(self, mock_get):
+        response_value = {
+            "title": "This is the conversation title",
+            "links": {"self": "http://localhost:8000/api/v1/conversations/1/"},
+        }
+        mock_get.return_value = Mock(ok=True)
+        mock_get.return_value.json.return_value = response_value
+        response = API.get_conversation_title(CONVERSATION_ID)
+        assert response == response_value["title"]
+
+    @patch("actions.ej_connector.api.requests.get")
+    def test_get_conversation_title_in_ej_invalid_response(self, mock_get):
+        response_value = {
+            "invalid": "This is not the conversation title text",
+        }
+        mock_get.return_value = Mock(ok=True)
+        mock_get.return_value.json.return_value = response_value
+        with pytest.raises(EJCommunicationError):
+            API.get_conversation_title(CONVERSATION_ID)
+
+    @patch("actions.ej_connector.api.requests.get")
+    def test_get_conversation_title_in_ej_forbidden_response(self, mock_get):
+        mock_get.return_value = Mock(status=401), "forbidden"
+        with pytest.raises(EJCommunicationError):
+            API.get_conversation_title(CONVERSATION_ID)
+
+    @patch("actions.ej_connector.api.requests.get")
     def test_get_random_comment_in_ej(self, mock_get):
         response_value = {
             "content": "This is the comment text",

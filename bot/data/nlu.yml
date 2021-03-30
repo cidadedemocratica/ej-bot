@@ -18,6 +18,8 @@ nlu:
     - oie
     - prazer
     - muito prazer
+    - eae
+    - fala duda
 - intent: agree
   examples: |
     - sim
