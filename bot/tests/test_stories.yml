@@ -7,6 +7,7 @@ stories:
   - user: |
       oi
     intent: start
+  - action: action_get_conversation_title
   - action: utter_start
   - action: utter_ask_user_particpate
 
@@ -22,6 +23,7 @@ stories:
   - user: |
       olá
     intent: start
+  - action: action_get_conversation_title
   - action: utter_start
   - action: utter_ask_user_particpate
   - user: |
@@ -31,12 +33,14 @@ stories:
   - action: utter_stopped
   - action: utter_next_conversation
   - action: utter_finish
+  - action: action_restart
 
 - story: User agree to use email
   steps:
   - user: |
       oi
     intent: start
+  - action: action_get_conversation_title
   - action: utter_start
   - action: utter_ask_user_particpate
   - user: |
@@ -93,3 +97,10 @@ stories:
     intent: invalid_email
   - action: utter_invalid_email
   - action: utter_ask_email_again
+
+- story: Welcome user
+  steps:
+  - user: |
+      novo usuario conectado
+    intent: welcome
+  - action: utter_welcome

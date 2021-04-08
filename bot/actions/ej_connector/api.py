@@ -88,10 +88,13 @@ class API:
 
     @staticmethod
     def send_comment_vote(comment_id, choice, token):
+        if choice in VOTE_CHOICES:
+            choice = VOTE_CHOICES[choice]
+
         body = json.dumps(
             {
                 "comment": comment_id,
-                "choice": VOTE_CHOICES[choice],
+                "choice": choice,
             }
         )
         try:
