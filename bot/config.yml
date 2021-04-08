@@ -14,7 +14,7 @@ pipeline:
   - name: ResponseSelector
   - name: "DucklingEntityExtractor"
     url: "http://duck:8000"
-    dimensions: ["email"]
+    dimensions: ["email", "number"]
 policies:
   - name: TEDPolicy
     max_history: 10

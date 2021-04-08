@@ -3,6 +3,15 @@ nlu:
 - intent: welcome
   examples: |
     - novo usuario conectado
+- intent: start_group_interaction
+  examples: |
+    - \start 1
+    - \start 56
+    - \start 433
+    - \start vinte e um 
+    - \start catorze
+    - \start quatorze
+    - \start dezoito
 - intent: start
   examples: |
     - começar a conversar

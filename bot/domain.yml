@@ -23,8 +23,12 @@ intents:
     use_entities: true
 - welcome:
     use_entities: true
+- start_group_interaction:
+    use_entities: true
 entities:
 - email
+- number
+- current_channel_info
 slots:
   change_comment:
     type: rasa.shared.core.slots.BooleanSlot
@@ -89,6 +93,11 @@ slots:
     initial_value: null
     auto_fill: true
     influence_conversation: false
+  current_channel_info:
+    type: rasa.shared.core.slots.TextSlot
+    initial_value: null
+    auto_fill: true
+    influence_conversation: true
 responses:
   utter_welcome:
   - text: Olá,  Muito prazer, eu sou a Duda!
@@ -145,12 +154,18 @@ responses:
   - text: Ah quando quiser trocar uma ideia é só me mandar um "Oi".
   utter_goodbye:
   - text: Pode deixar que te mantenho por dentro sobre as novidades desse assunto
+  utter_explain_no_button_participation:
+  - text: Para concordar com um comentário, digite 1. \n Para discordar de um comentário, digite -1. \n Caso queira pular um comentário, digite 0.
+  utter_explain_button_participation:
+  - text: Para concordar com um comentário, digite 1 ou clique no botão Concordar, para discordar de um comentário, digite -1 ou clique no botão Discordar. \n Caso queira pular um comentário, digite 0 ou clique no botão Pular.
 actions:
 - action_get_conversation_title
 - action_setup_conversation
 - action_ask_vote
 - action_follow_up_form
 - validate_vote_form
+- action_setup_by_user_conversation
+- action_set_channel_info
 forms:
   vote_form:
     vote:

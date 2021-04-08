@@ -219,8 +219,10 @@ class EjUrlsGenerationClassTest(unittest.TestCase):
 
     def test_user_comments_route_generator(self):
         url = user_comments_route(CONVERSATION_ID)
-        return f"{API_URL}/conversations/{CONVERSATION_ID}/user-comments/"
+        assert url == f"{API_URL}/conversations/{CONVERSATION_ID}/user-comments/"
 
     def test_user_pending_comments_route_generator(self):
         url = user_pending_comments_route(CONVERSATION_ID)
-        return f"{API_URL}/conversations/{CONVERSATION_ID}/user-pending-comments/"
+        assert (
+            url == f"{API_URL}/conversations/{CONVERSATION_ID}/user-pending-comments/"
+        )

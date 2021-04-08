@@ -8,6 +8,20 @@ stories:
       - action: utter_start
       - action: utter_ask_user_particpate
 
+  - story: Explains user participation after they agreed and get current channel info
+    steps:
+      - intent: start
+      - action: action_get_conversation_title
+      - action: utter_start
+      - action: utter_ask_user_particpate
+      - intent: agree
+      - action: action_set_channel_info
+      - action: utter_agreed_participation
+      - action: utter_ask_email
+      - action: utter_explain_ask_email
+      - action: utter_email_is_optional
+      - action: utter_send_email
+
   - story: User don't want to participate sad path
     steps:
       - intent: start
@@ -23,12 +37,6 @@ stories:
 
   - story: Activate vote form with user email
     steps:
-      - intent: agree
-      - action: utter_agreed_participation
-      - action: utter_ask_email
-      - action: utter_explain_ask_email
-      - action: utter_email_is_optional
-      - action: utter_send_email
       - intent: email
         entities:
           - email
@@ -40,14 +48,8 @@ stories:
       - action: action_follow_up_form
       - action: utter_thanks_participation
 
-  - story: Activate vote form without user email
+  - story: User want to participate without email
     steps:
-      - intent: agree
-      - action: utter_agreed_participation
-      - action: utter_ask_email
-      - action: utter_explain_ask_email
-      - action: utter_email_is_optional
-      - action: utter_send_email
       - intent: disagree
       - action: action_setup_conversation
       - action: utter_stop_conversation

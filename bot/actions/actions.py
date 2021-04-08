@@ -15,6 +15,7 @@ from rasa_sdk.events import SlotSet, FollowupAction, EventType
 from rasa_sdk.types import DomainDict
 import logging
 from .ej_connector import API, EJCommunicationError
+from .utils import define_vote_utter, VOTE_VALUES
 
 logger = logging.getLogger(__name__)
 
@@ -68,6 +69,12 @@ class ActionSetupConversation(Action):
             )
             return [FollowupAction("action_restart")]
 
+        if tracker.get_slot("current_channel_info") == "rocket_livechat":
+            # explain how user can vote according to current channel
+            dispatcher.utter_message(template="utter_explain_no_button_participation")
+        else:
+            dispatcher.utter_message(template="utter_explain_button_participation")
+
         statistics = API.get_user_conversation_statistics(conversation_id, user.token)
         first_comment = API.get_next_comment(conversation_id, user.token)
         logger.debug("INFO")
@@ -110,11 +117,6 @@ class ActionAskVote(Action):
     def run(
         self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict
     ) -> List[EventType]:
-        buttons = [
-            {"title": "Concordar", "payload": "Concordar"},
-            {"title": "Discordar", "payload": "Discordar"},
-            {"title": "Pular", "payload": "Pular"},
-        ]
         conversation_id = tracker.get_slot("conversation_id")
         token = tracker.get_slot("ej_user_token")
         statistics = API.get_user_conversation_statistics(conversation_id, token)
@@ -125,8 +127,12 @@ class ActionAskVote(Action):
             new_comment = API.get_next_comment(conversation_id, token)
             comment_content = new_comment["content"]
             message = f"{comment_content} \n O que você acha disso ({number_voted_comments}/{total_comments})?"
-
-            dispatcher.utter_message(text=message, buttons=buttons)
+            if "metadata" in tracker.latest_message:
+                metadata = tracker.latest_message["metadata"]
+            else:
+                metadata = {}
+            message = define_vote_utter(metadata, message)
+            dispatcher.utter_message(**message)
 
             conversation_id = tracker.get_slot("conversation_id")
             token = tracker.get_slot("ej_user_token")
@@ -139,8 +145,14 @@ class ActionAskVote(Action):
             ]
         else:
             comment_content = tracker.get_slot("comment_text")
-            message = f"{comment_content} \n O que você acha disso ({number_voted_comments}/{total_comments})?"
-            dispatcher.utter_message(text=message, buttons=buttons)
+            message = f"'{comment_content}' \n O que você acha disso ({number_voted_comments}/{total_comments})?"
+            if "metadata" in tracker.latest_message:
+                metadata = tracker.latest_message["metadata"]
+            else:
+                metadata = {}
+            message = define_vote_utter(metadata, message)
+            dispatcher.utter_message(**message)
+
             return [SlotSet("change_comment", True)]
 
 
@@ -159,7 +171,7 @@ class ValidateVoteForm(FormValidationAction):
         token = tracker.get_slot("ej_user_token")
         conversation_id = tracker.get_slot("conversation_id")
         dispatcher.utter_message(text=type(slot_value))
-        if str(slot_value) in ["Concordar", "Discordar", "Pular"]:
+        if str(slot_value) in VOTE_VALUES:
             comment_id = tracker.get_slot("current_comment_id")
             sent_vote = API.send_comment_vote(comment_id, slot_value, token)
 
@@ -184,3 +196,50 @@ class ValidateVoteForm(FormValidationAction):
             else:
                 dispatcher.utter_message(template="utter_send_comment_error")
         return {"vote": None}
+
+
+class ActionSetupByUserConversation(Action):
+    def name(self):
+        return "action_setup_by_user_conversation"
+
+    def run(self, dispatcher, tracker, domain):
+        conversation_id = tracker.latest_message["intent"]
+        logger.debug("INFO")
+        logger.debug(conversation_id)
+        if tracker.get_latest_input_channel() == "telegram":
+            try:
+                conversation_title = API.get_conversation_title(conversation_id)
+                logger.debug(conversation_title)
+                return [
+                    SlotSet("conversation_title", conversation_title),
+                    SlotSet("conversation_id", conversation_id),
+                ]
+            except EJCommunicationError:
+                dispatcher.utter_message(
+                    text="Opa, parece que não estou conseguindo acessar nosso servidor."
+                )
+                dispatcher.utter_message(
+                    text="Tive um problema técnico, por favor tente participar mais tarde."
+                )
+                return [FollowupAction("action_restart")]
+        else:
+            dispatcher.utter_message(
+                text="Opa, parece que você não pode fazer isso por aqui."
+            )
+            return [FollowupAction("action_restart")]
+
+
+class ActionSetChannelInfo(Action):
+    def name(self):
+        return "action_set_channel_info"
+
+    def run(self, dispatcher, tracker, domain):
+        logger.debug(tracker.latest_message["metadata"])
+        channel = tracker.get_latest_input_channel()
+
+        if tracker.get_latest_input_channel() == "rocketchat":
+            if "agent" in tracker.latest_message["metadata"]:
+                channel = "rocket_livechat"
+        return [
+            SlotSet("current_channel_info", channel),
+        ]
