@@ -35,7 +35,7 @@ class APIClassTest(unittest.TestCase):
         response_value = {"key": "key_value"}
         mock_post.return_value = Mock(ok=True)
         mock_post.return_value.json.return_value = response_value
-        response = API.create_user(SENDER_ID)
+        response = API.get_or_create_user(SENDER_ID)
         assert response.token == response_value["key"]
 
     @patch("actions.ej_connector.api.requests.post")
@@ -43,7 +43,7 @@ class APIClassTest(unittest.TestCase):
         response_value = {"key": "key_value"}
         mock_post.return_value = Mock(ok=True)
         mock_post.return_value.json.return_value = response_value
-        response = API.create_user(SENDER_ID, EMAIL, EMAIL)
+        response = API.get_or_create_user(SENDER_ID, EMAIL, EMAIL)
         assert response.token == response_value["key"]
 
     @patch("actions.ej_connector.api.requests.post")
@@ -52,13 +52,13 @@ class APIClassTest(unittest.TestCase):
         mock_post.return_value = Mock(ok=True)
         mock_post.return_value.json.return_value = response_value
         with pytest.raises(EJCommunicationError):
-            API.create_user(SENDER_ID, EMAIL, EMAIL)
+            API.get_or_create_user(SENDER_ID, EMAIL, EMAIL)
 
     @patch("actions.ej_connector.api.requests.post")
     def test_create_user_returns_forbidden_response(self, mock_post):
         mock_post.return_value = Mock(status=401), "forbidden"
         with pytest.raises(EJCommunicationError):
-            API.create_user(SENDER_ID, EMAIL, EMAIL)
+            API.get_or_create_user(SENDER_ID, EMAIL, EMAIL)
 
     @patch("actions.ej_connector.api.requests.get")
     def test_get_conversation_title_in_ej(self, mock_get):

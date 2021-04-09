@@ -51,7 +51,7 @@ class API:
         return title
 
     @staticmethod
-    def create_user(sender_id, name="Participante anônimo", email=""):
+    def get_or_create_user(sender_id, name="Participante anônimo", email=""):
         user = User(sender_id, name, email)
         try:
             response = requests.post(
@@ -104,7 +104,7 @@ class API:
                 headers=auth_headers(token),
             )
             response = response.json()
-        except:
+        except Exception as e:
             raise EJCommunicationError
         return response
 
@@ -120,7 +120,7 @@ class API:
                 headers=auth_headers(token),
             )
             response = response.json()
-        except:
+        except Exception as e:
             raise EJCommunicationError
         return response
 
