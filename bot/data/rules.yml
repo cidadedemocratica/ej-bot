@@ -14,8 +14,14 @@ rules:
       - action: utter_next_conversation
       - action: utter_finish
       - active_loop: null
+      - active_loop: action_restart
 
   - rule: Welcome user
     steps:
       - intent: welcome
       - action: utter_welcome
+
+  - rule: Help command
+    steps:
+      - intent: help
+      - action: utter_help

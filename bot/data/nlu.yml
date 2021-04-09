@@ -5,13 +5,19 @@ nlu:
     - novo usuario conectado
 - intent: start_group_interaction
   examples: |
-    - \start 1
-    - \start 56
-    - \start 433
-    - \start vinte e um 
-    - \start catorze
-    - \start quatorze
-    - \start dezoito
+    - participar 1
+    - participar 56
+    - participar 12
+    - participar 33
+    - participar 18
+    - participar na conversa 56
+    - participar na conversa de id 433
+    - id da conversa: 1
+    - id conversa 1
+    - id da conversa: vinte e um 
+    - participar catorze
+    - participar quatorze
+    - participar dezoito
 - intent: start
   examples: |
     - começar a conversar
@@ -29,6 +35,7 @@ nlu:
     - muito prazer
     - eae
     - fala duda
+    - start
 - intent: agree
   examples: |
     - sim
@@ -114,6 +121,12 @@ nlu:
     - meu email é @nome
     - email: @maria
     - meu email: roberto@
+- intent: help
+  examples: |
+    - ajuda
+    - help
+    - comandos disponíveis
+    - quais comandos posso usar?
 - intent: out_of_context
   examples: |
     - 4 + 2 = ?

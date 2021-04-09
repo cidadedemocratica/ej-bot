@@ -25,6 +25,8 @@ intents:
     use_entities: true
 - start_group_interaction:
     use_entities: true
+- help:
+    use_entities: true
 entities:
 - email
 - number
@@ -93,6 +95,8 @@ slots:
     initial_value: null
     auto_fill: true
     influence_conversation: false
+  number:
+    type: rasa.shared.core.slots.FloatSlot
   current_channel_info:
     type: rasa.shared.core.slots.TextSlot
     initial_value: null
@@ -104,7 +108,9 @@ responses:
   utter_start:
   - text: Eu estava querendo saber a opinião de outras pessoas a respeito de {conversation_title}.
   utter_ask_user_particpate:
-  - text: Topa um bate-papo comigo sobre o assunto?
+  - text: Topa um bate-papo comigo?
+  utter_ask_group_participate:
+  - text: Vocês topam bater um papo comigo? A conversa pode ser selecionada a partir de /participar [id]
   utter_agreed_participation:
   - text: Ah maravilha 😄
   - text: Eu agradeço muito!
@@ -133,6 +139,8 @@ responses:
   - text: Anotado!
   - text: Beleza, anotei aqui.
   - text: Entendo, registrado.
+  - channel: telegram
+    text: Anotei aqui {telegram_username}
   utter_out_of_context:
   - text: Desculpe, não sei se entendi 😕
   utter_sent_comment:
@@ -154,6 +162,8 @@ responses:
   - text: Ah quando quiser trocar uma ideia é só me mandar um "Oi".
   utter_goodbye:
   - text: Pode deixar que te mantenho por dentro sobre as novidades desse assunto
+  utter_help:
+  - text: A lista de comandos disponíveis atualmente é \n /participar [id] - Em um grupo de telegram, pode-se escolher a conversa para iniciar um debate, a partir do seu id.
   utter_explain_no_button_participation:
   - text: Para concordar com um comentário, digite 1. \n Para discordar de um comentário, digite -1. \n Caso queira pular um comentário, digite 0.
   utter_explain_button_participation:

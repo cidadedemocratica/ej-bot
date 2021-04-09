@@ -7,9 +7,10 @@ stories:
   - user: |
       oi
     intent: start
+  - action: action_set_channel_info
+  - action: utter_ask_user_particpate
   - action: action_get_conversation_title
   - action: utter_start
-  - action: utter_ask_user_particpate
 
 - story: User utters out of context 
   steps:
@@ -23,9 +24,10 @@ stories:
   - user: |
       olá
     intent: start
+  - action: action_set_channel_info
+  - action: utter_ask_user_particpate
   - action: action_get_conversation_title
   - action: utter_start
-  - action: utter_ask_user_particpate
   - user: |
       não
     intent: disagree
@@ -40,9 +42,10 @@ stories:
   - user: |
       oi
     intent: start
+  - action: action_set_channel_info
+  - action: utter_ask_user_particpate
   - action: action_get_conversation_title
   - action: utter_start
-  - action: utter_ask_user_particpate
   - user: |
       sim
     intent: agree
@@ -50,12 +53,14 @@ stories:
   - action: utter_ask_email
   - action: utter_explain_ask_email
   - action: utter_email_is_optional
+  - action: utter_send_email
   - user: |
       meu email: [email@user.com](email)
     intent: email
   - slot_was_set:
     - email: email@user.com
   - action: action_setup_conversation
+  - action: utter_stop_conversation
   - action: vote_form
   - active_loop: vote_form
 
@@ -64,8 +69,10 @@ stories:
   - user: |
       oi
     intent: start
-  - action: utter_start
+  - action: action_set_channel_info
   - action: utter_ask_user_particpate
+  - action: action_get_conversation_title
+  - action: utter_start
   - user: |
       sim
     intent: agree
@@ -73,10 +80,12 @@ stories:
   - action: utter_ask_email
   - action: utter_explain_ask_email
   - action: utter_email_is_optional
+  - action: utter_send_email
   - user: |
       não
     intent: disagree
   - action: action_setup_conversation
+  - action: utter_stop_conversation
   - action: vote_form
   - active_loop: vote_form
 
@@ -85,13 +94,18 @@ stories:
   - user: |
       olá
     intent: start
-  - action: utter_start
+  - action: action_set_channel_info
   - action: utter_ask_user_particpate
+  - action: action_get_conversation_title
+  - action: utter_start
   - user: |
       sim
     intent: agree
   - action: utter_agreed_participation
   - action: utter_ask_email
+  - action: utter_explain_ask_email
+  - action: utter_email_is_optional
+  - action: utter_send_email
   - user: |
       @mario
     intent: invalid_email
@@ -104,3 +118,10 @@ stories:
       novo usuario conectado
     intent: welcome
   - action: utter_welcome
+
+- story: User wants help
+  steps:
+  - user: |
+      ajuda
+    intent: help
+  - action: utter_help

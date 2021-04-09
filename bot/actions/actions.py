@@ -6,7 +6,6 @@
 
 from .ej_connector import API
 from typing import Text, List, Any, Dict
-import json
 
 #
 from rasa_sdk import Action, Tracker, FormValidationAction
@@ -49,11 +48,11 @@ class ActionSetupConversation(Action):
             last_intent = tracker.latest_message["intent"].get("name")
 
             if user_email and last_intent == "email":
-                user = API.create_user(tracker.sender_id, user_email, user_email)
+                user = API.get_or_create_user(tracker.sender_id, user_email, user_email)
                 if user:
                     dispatcher.utter_message(template="utter_got_email")
             else:
-                user = API.create_user(tracker.sender_id)
+                user = API.get_or_create_user(tracker.sender_id)
                 if user:
                     dispatcher.utter_message(template="utter_user_want_anonymous")
             statistics = API.get_user_conversation_statistics(
@@ -170,13 +169,32 @@ class ValidateVoteForm(FormValidationAction):
         """Validate vote value."""
         token = tracker.get_slot("ej_user_token")
         conversation_id = tracker.get_slot("conversation_id")
+        logger.debug(slot_value)
+
         dispatcher.utter_message(text=type(slot_value))
         if str(slot_value) in VOTE_VALUES:
             comment_id = tracker.get_slot("current_comment_id")
             sent_vote = API.send_comment_vote(comment_id, slot_value, token)
 
             if sent_vote["created"]:
-                dispatcher.utter_message(template="utter_vote_received")
+                if tracker.get_latest_input_channel() == "telegram":
+                    logger.debug(tracker.latest_message["metadata"])
+                    if "callback_query" in tracker.latest_message["metadata"]:
+                        metadata = tracker.latest_message["metadata"]["callback_query"]
+                        telegram_username = metadata["message"]["from"]["username"]
+                    else:
+                        metadata = tracker.latest_message["metadata"]["message"]
+                        telegram_username = telegram_username = tracker.latest_message[
+                            "metadata"
+                        ]["from"]["username"]
+                    name = metadata["from"]["first_name"]
+                    user_id = f"{metadata['from']['id']}-telegram"
+                    logger.debug(metadata["from"]["first_name"])
+                    dispatcher.utter_message(
+                        text=f"Obrigada {telegram_username}, seu voto foi computado."
+                    )
+                else:
+                    dispatcher.utter_message(template="utter_vote_received")
             statistics = API.get_user_conversation_statistics(conversation_id, token)
             if statistics["missing_votes"] > 0:
                 # user still has comments to vote, remain in loop
@@ -203,10 +221,11 @@ class ActionSetupByUserConversation(Action):
         return "action_setup_by_user_conversation"
 
     def run(self, dispatcher, tracker, domain):
-        conversation_id = tracker.latest_message["intent"]
-        logger.debug("INFO")
+        conversation_id = tracker.get_slot("number")
+        logger.debug("INFO:    " + str(conversation_id))
         logger.debug(conversation_id)
-        if tracker.get_latest_input_channel() == "telegram":
+
+        if tracker.get_slot("current_channel_info") == "telegram_group":
             try:
                 conversation_title = API.get_conversation_title(conversation_id)
                 logger.debug(conversation_title)
@@ -240,6 +259,14 @@ class ActionSetChannelInfo(Action):
         if tracker.get_latest_input_channel() == "rocketchat":
             if "agent" in tracker.latest_message["metadata"]:
                 channel = "rocket_livechat"
+        if tracker.get_latest_input_channel() == "telegram":
+            if tracker.latest_message["metadata"]["message"]["chat"]["type"] == "group":
+                channel = "telegram_group"
+                return [
+                    SlotSet("current_channel_info", channel),
+                    FollowupAction("utter_ask_group_participate"),
+                ]
         return [
             SlotSet("current_channel_info", channel),
+            FollowupAction("utter_ask_user_particpate"),
         ]

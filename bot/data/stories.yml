@@ -1,21 +1,39 @@
 version: "2.0"
 
 stories:
-  - story: Greet user
+  - story: Greet user in individual chat
     steps:
       - intent: start
+      - action: action_set_channel_info
+      - action: utter_ask_user_particpate
       - action: action_get_conversation_title
       - action: utter_start
-      - action: utter_ask_user_particpate
+
+  - story: Greet group in telegram chat
+    steps:
+      - intent: start
+      - action: action_set_channel_info
+      - slot_was_set:
+        - current_channel_info: 'telegram_group'
+      - action: utter_ask_group_participate
+      - intent: start_group_interaction
+      - action: action_setup_by_user_conversation
+      - action: utter_start
+      - action: utter_stop_conversation
+      - action: vote_form
+      - active_loop: vote_form
+      - active_loop: null
+      - action: action_follow_up_form
+      - action: utter_thanks_participation
 
   - story: Explains user participation after they agreed and get current channel info
     steps:
       - intent: start
+      - action: action_set_channel_info
+      - action: utter_ask_user_particpate
       - action: action_get_conversation_title
       - action: utter_start
-      - action: utter_ask_user_particpate
       - intent: agree
-      - action: action_set_channel_info
       - action: utter_agreed_participation
       - action: utter_ask_email
       - action: utter_explain_ask_email
@@ -25,9 +43,24 @@ stories:
   - story: User don't want to participate sad path
     steps:
       - intent: start
+      - action: action_set_channel_info
+      - action: utter_ask_user_particpate
       - action: action_get_conversation_title
       - action: utter_start
-      - action: utter_ask_user_particpate
+      - intent: disagree
+      - action: utter_disagreed_participation
+      - action: utter_stopped
+      - action: utter_next_conversation
+      - action: utter_finish
+      - action: action_restart
+
+  - story: Group don't want to participate sad path
+    steps:
+      - intent: start
+      - action: action_set_channel_info
+      - slot_was_set:
+        - current_channel_info: 'telegram_group'
+      - action: utter_ask_group_participate
       - intent: disagree
       - action: utter_disagreed_participation
       - action: utter_stopped
