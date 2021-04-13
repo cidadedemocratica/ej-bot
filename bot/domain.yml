@@ -25,11 +25,14 @@ intents:
     use_entities: true
 - start_group_interaction:
     use_entities: true
+- url:
+    use_entities: true
 - help:
     use_entities: true
 entities:
 - email
 - number
+- url
 - current_channel_info
 slots:
   change_comment:
@@ -162,6 +165,12 @@ responses:
   - text: Ah quando quiser trocar uma ideia é só me mandar um "Oi".
   utter_goodbye:
   - text: Pode deixar que te mantenho por dentro sobre as novidades desse assunto
+  utter_ej_communication_error:
+  - text: Opa, parece que não estou conseguindo acessar nosso servidor.
+  utter_error_try_again_later:
+  - text: Tive um problema técnico, por favor tente participar mais tarde.
+  utter_ej_connection_doesnt_exist:
+  - text: Esse site ainda não está conectado com a EJ. Entre em contato com os administradores dele.
   utter_help:
   - text: A lista de comandos disponíveis atualmente é \n /participar [id] - Em um grupo de telegram, pode-se escolher a conversa para iniciar um debate, a partir do seu id.
   utter_explain_no_button_participation:
@@ -175,6 +184,7 @@ actions:
 - action_follow_up_form
 - validate_vote_form
 - action_setup_by_user_conversation
+- action_get_conversation_id
 - action_set_channel_info
 forms:
   vote_form:

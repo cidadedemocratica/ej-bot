@@ -21,6 +21,10 @@ rules:
       - intent: welcome
       - action: utter_welcome
 
+  - rule: Set conversation id for webchat
+    steps:
+      - intent: url
+      - action: utter_welcome
   - rule: Help command
     steps:
       - intent: help

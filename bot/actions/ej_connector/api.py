@@ -124,6 +124,16 @@ class API:
             raise EJCommunicationError
         return response
 
+    @staticmethod
+    def get_conversation_info_by_url(url):
+        endpoint_url = f"{API_URL}/rasa-conversations/integrations?domain={url}"
+        try:
+            response = requests.get(endpoint_url, headers=HEADERS)
+            response = response.json()
+        except:
+            raise EJCommunicationError
+        return response
+
 
 class EJCommunicationError(Exception):
     """Raised when request from EJ doesnt supply waited response"""

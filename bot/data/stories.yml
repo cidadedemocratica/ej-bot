@@ -7,6 +7,7 @@ stories:
       - action: action_set_channel_info
       - action: utter_ask_user_particpate
       - action: action_get_conversation_title
+      - action: action_get_conversation_id
       - action: utter_start
 
   - story: Greet group in telegram chat
@@ -32,6 +33,7 @@ stories:
       - action: action_set_channel_info
       - action: utter_ask_user_particpate
       - action: action_get_conversation_title
+      - action: action_get_conversation_id
       - action: utter_start
       - intent: agree
       - action: utter_agreed_participation
@@ -46,6 +48,7 @@ stories:
       - action: action_set_channel_info
       - action: utter_ask_user_particpate
       - action: action_get_conversation_title
+      - action: action_get_conversation_id
       - action: utter_start
       - intent: disagree
       - action: utter_disagreed_participation
@@ -115,3 +118,8 @@ stories:
       - action: utter_next_conversation
       - action: utter_finish
       - action: action_restart
+
+  - story: Start group interaction on telegram
+    steps:
+      - intent: start_group_interaction
+      - action: action_setup_by_user_conversation
