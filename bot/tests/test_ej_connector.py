@@ -165,6 +165,36 @@ class APIClassTest(unittest.TestCase):
         with pytest.raises(EJCommunicationError):
             API.send_new_comment(CONVERSATION_ID, "content", TOKEN)
 
+    @patch("actions.ej_connector.api.requests.get")
+    def test_get_webchat_connection_to_conversation(self, mock_get):
+        response_value = [
+            {
+                "conversation": "This is the conversation title",
+                "links": {
+                    "conversation": "http://localhost:8000/api/v1/conversations/1/"
+                },
+            }
+        ]
+        mock_get.return_value = Mock(ok=True)
+        mock_get.return_value.json.return_value = response_value
+        response = API.get_conversation_info_by_url(CONVERSATION_ID)
+        assert response[0]["conversation"] == response_value[0]["conversation"]
+        assert response[0]["links"]["conversation"][-2] == "1"
+
+    @patch("actions.ej_connector.api.requests.get")
+    def test_get_webchat_connection_not_existing(self, mock_get):
+        response_value = []
+        mock_get.return_value = Mock(ok=True)
+        mock_get.return_value.json.return_value = response_value
+        response = API.get_conversation_info_by_url(CONVERSATION_ID)
+        assert response == []
+
+    @patch("actions.ej_connector.api.requests.get")
+    def test_get_webchat_connection_not_existing(self, mock_get):
+        mock_get.return_value = Mock(status=404), "conversation not found"
+        with pytest.raises(EJCommunicationError):
+            API.get_conversation_info_by_url(CONVERSATION_ID)
+
 
 class UserClassTest(unittest.TestCase):
     """tests actions.ej_connector.user file"""

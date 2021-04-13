@@ -10,7 +10,7 @@
     (e.onload = () => {
       window.WebChat.default(
         {
-          initPayload: "novo usuario conectado",
+          initPayload: window.location.href,
           socketUrl: "http://localhost:5006?token=thisismysecret",
           // add other props here
         },

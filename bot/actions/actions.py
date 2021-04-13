@@ -60,12 +60,8 @@ class ActionSetupConversation(Action):
             )
             first_comment = API.get_next_comment(conversation_id, user.token)
         except EJCommunicationError:
-            dispatcher.utter_message(
-                text="Opa, parece que não estou conseguindo acessar nosso servidor."
-            )
-            dispatcher.utter_message(
-                text="Tive um problema técnico, por favor tente participar mais tarde."
-            )
+            dispatcher.utter_message(template="utter_ej_communication_error")
+            dispatcher.utter_message(template="utter_error_try_again_later")
             return [FollowupAction("action_restart")]
 
         if tracker.get_slot("current_channel_info") == "rocket_livechat":
@@ -118,12 +114,22 @@ class ActionAskVote(Action):
     ) -> List[EventType]:
         conversation_id = tracker.get_slot("conversation_id")
         token = tracker.get_slot("ej_user_token")
-        statistics = API.get_user_conversation_statistics(conversation_id, token)
+        try:
+            statistics = API.get_user_conversation_statistics(conversation_id, token)
+        except EJCommunicationError:
+            dispatcher.utter_message(template="utter_ej_communication_error")
+            dispatcher.utter_message(template="utter_error_try_again_later")
+            return [FollowupAction("action_restart")]
         total_comments = statistics["missing_votes"] + statistics["votes"]
         number_voted_comments = statistics["votes"]
 
         if tracker.get_slot("change_comment"):
-            new_comment = API.get_next_comment(conversation_id, token)
+            try:
+                new_comment = API.get_next_comment(conversation_id, token)
+            except EJCommunicationError:
+                dispatcher.utter_message(template="utter_ej_communication_error")
+                dispatcher.utter_message(template="utter_error_try_again_later")
+                return [FollowupAction("action_restart")]
             comment_content = new_comment["content"]
             message = f"{comment_content} \n O que você acha disso ({number_voted_comments}/{total_comments})?"
             if "metadata" in tracker.latest_message:
@@ -135,7 +141,6 @@ class ActionAskVote(Action):
 
             conversation_id = tracker.get_slot("conversation_id")
             token = tracker.get_slot("ej_user_token")
-            new_comment = API.get_next_comment(conversation_id, token)
             return [
                 SlotSet("number_voted_comments", number_voted_comments),
                 SlotSet("comment_text", new_comment["content"]),
@@ -234,17 +239,44 @@ class ActionSetupByUserConversation(Action):
                     SlotSet("conversation_id", conversation_id),
                 ]
             except EJCommunicationError:
-                dispatcher.utter_message(
-                    text="Opa, parece que não estou conseguindo acessar nosso servidor."
-                )
-                dispatcher.utter_message(
-                    text="Tive um problema técnico, por favor tente participar mais tarde."
-                )
+                dispatcher.utter_message(template="utter_ej_communication_error")
+                dispatcher.utter_message(template="utter_error_try_again_later")
                 return [FollowupAction("action_restart")]
         else:
             dispatcher.utter_message(
                 text="Opa, parece que você não pode fazer isso por aqui."
             )
+            return [FollowupAction("action_restart")]
+
+
+class ActionGetConversationId(Action):
+    """
+    Send request to EJ with current URL where the bot is hosted
+    Get conversation ID and Title in return
+    """
+
+    def name(self):
+        return "action_get_conversation_id"
+
+    def run(self, dispatcher, tracker, domain):
+        bot_url = tracker.get_slot("url")
+        try:
+            conversation_info = API.get_conversation_info_by_url(bot_url)
+        except EJCommunicationError:
+            dispatcher.utter_message(template="utter_ej_communication_error")
+            dispatcher.utter_message(template="utter_error_try_again_later")
+            return [FollowupAction("action_restart")]
+        if conversation_info:
+            # TODO: If a domain has more than one conversation, need to think how to deal with it
+            conversation_title = conversation_info[0]["conversation"]
+            conversation_id = conversation_info[0]["links"]["conversation"][-2]
+            return [
+                SlotSet("conversation_title", conversation_title),
+                SlotSet("conversation_id", conversation_id),
+            ]
+        else:
+            dispatcher.utter_message(template="utter_ej_connection_doesnt_exist")
+            dispatcher.utter_message(template="utter_error_try_again_later")
             return [FollowupAction("action_restart")]
 
 

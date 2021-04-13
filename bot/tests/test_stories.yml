@@ -10,6 +10,7 @@ stories:
   - action: action_set_channel_info
   - action: utter_ask_user_particpate
   - action: action_get_conversation_title
+  - action: action_get_conversation_id
   - action: utter_start
 
 - story: User utters out of context 
@@ -27,6 +28,7 @@ stories:
   - action: action_set_channel_info
   - action: utter_ask_user_particpate
   - action: action_get_conversation_title
+  - action: action_get_conversation_id
   - action: utter_start
   - user: |
       não
@@ -45,6 +47,7 @@ stories:
   - action: action_set_channel_info
   - action: utter_ask_user_particpate
   - action: action_get_conversation_title
+  - action: action_get_conversation_id
   - action: utter_start
   - user: |
       sim
@@ -72,6 +75,7 @@ stories:
   - action: action_set_channel_info
   - action: utter_ask_user_particpate
   - action: action_get_conversation_title
+  - action: action_get_conversation_id
   - action: utter_start
   - user: |
       sim
@@ -97,6 +101,7 @@ stories:
   - action: action_set_channel_info
   - action: utter_ask_user_particpate
   - action: action_get_conversation_title
+  - action: action_get_conversation_id
   - action: utter_start
   - user: |
       sim

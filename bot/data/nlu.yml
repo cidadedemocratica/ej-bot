@@ -121,6 +121,13 @@ nlu:
     - meu email é @nome
     - email: @maria
     - meu email: roberto@
+
+- intent: url
+  examples: |
+    - https://cidadedemocratica.org.br/
+    - https://www.google.com/
+    - http://localhost:8001/
+
 - intent: help
   examples: |
     - ajuda
@@ -138,3 +145,4 @@ nlu:
     - asdfgasd
     - oque
     - que
+
