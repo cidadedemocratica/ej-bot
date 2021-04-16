@@ -105,6 +105,11 @@ slots:
     initial_value: null
     auto_fill: true
     influence_conversation: true
+  url:
+    type: rasa.shared.core.slots.TextSlot
+    initial_value: null
+    auto_fill: true
+    influence_conversation: false
 responses:
   utter_welcome:
   - text: Olá,  Muito prazer, eu sou a Duda!
