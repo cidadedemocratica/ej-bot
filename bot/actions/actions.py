@@ -253,12 +253,17 @@ class ActionGetConversationId(Action):
     """
     Send request to EJ with current URL where the bot is hosted
     Get conversation ID and Title in return
+    Should not be executed if in other channel other than socketio
+    (first condition verified in run)
     """
 
     def name(self):
         return "action_get_conversation_id"
 
     def run(self, dispatcher, tracker, domain):
+        if not tracker.get_latest_input_channel() == "socketio":
+            # this action is only ran in webchat (socketio) channels
+            return [FollowupAction("utter_start")]
         bot_url = tracker.get_slot("url")
         try:
             conversation_info = API.get_conversation_info_by_url(bot_url)
