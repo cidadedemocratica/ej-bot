@@ -35,10 +35,9 @@ services:
     depends_on:
       - actions
     environment:
-      RASA_DUCKLING_HTTP_URL: http://duck:8000
-      ACTIONS_SERVER_URL: http://actions:5055/webhook
-      RASA_SERVER_URL: http://bot:5002/api
-
+      env_file:
+        - env/auth.env
+        - env/servers.env
   # ================================= Actions =================================
   # Rasa middleware used to connect with external APIs.
   actions:
@@ -58,6 +57,7 @@ services:
       EJ_HOST: https://ejplatform.pencillabs.com.br
     env_file:
       - env/auth.env
+      - env/servers.env
   # ================================= RASA X ==================================
   # Rasa X container
   x:
@@ -78,7 +78,9 @@ services:
     depends_on:
       - actions
     command: sh -c "make x"
-
+    env_file:
+      - env/auth.env
+      - env/servers.env
   # Duckling HTTP extractor for entities such as email, date, amounts...
   duckling:
     container_name: duck
