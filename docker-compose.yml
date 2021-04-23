@@ -1,52 +1,58 @@
-version: '3'
+version: "3.4"
+
+x-bot-common-build: &bot-common-build
+  build:
+    context: .
+    dockerfile: ./docker/bot.Dockerfile
+
+x-bot-common: &bot-common
+  env_file:
+    - env/auth.env
+    - env/servers.env
 
 services:
+  # =============================== Webchat =================================
+  # Nginx container to run rasa webchat
   webchat:
     image: nginx
     volumes:
       - ./webchat/:/usr/share/nginx/html/
     ports:
       - 8001:80
+
   # =============================== Coach =================================
   # All the models are trained by this coach.
   coach:
-    build:
-      context: .
-      dockerfile: ./docker/bot.Dockerfile
+    <<: *bot-common-build
     volumes:
       - ./bot/models/:/bot/models/
     command: "make train"
 
   # ================================= Bot =====================================
+  # Rasa open source server
   bot:
+    <<: *bot-common-build
+    <<: *bot-common
     container_name: bot
-    build:
-      context: .
-      dockerfile: ./docker/bot.Dockerfile
     restart: unless-stopped
     volumes:
       - ./bot/:/bot/
-    networks:
-      - bot-network
     ports:
       - 5006:5006
       - 5004:5004
       - 5005:5005
     depends_on:
       - actions
-    environment:
-      env_file:
-        - env/auth.env
-        - env/servers.env
+    # https://github.com/docker/compose/issues/6767
+    networks:
+      - bot-network
+
   # ================================= Actions =================================
   # Rasa middleware used to connect with external APIs.
   actions:
+    <<: *bot-common
+    <<: *bot-common-build
     container_name: actions
-    build:
-      context: .
-      dockerfile: ./docker/actions.Dockerfile
-    networks:
-      - bot-network
     ports:
       - 5055:5055
     volumes:
@@ -55,19 +61,16 @@ services:
     environment:
       JWT_SECRET: RRrWj+H2QEqV9O7iKBrU0zuB
       EJ_HOST: https://ejplatform.pencillabs.com.br
-    env_file:
-      - env/auth.env
-      - env/servers.env
-  # ================================= RASA X ==================================
-  # Rasa X container
-  x:
-    container_name: x
-    build:
-      context: .
-      dockerfile: ./docker/bot.Dockerfile
-    restart: unless-stopped
     networks:
       - bot-network
+
+  # ================================= RASA X ==================================
+  # Rasa X application
+  x:
+    container_name: x
+    <<: *bot-common
+    <<: *bot-common-build
+    restart: unless-stopped
     volumes:
       - ./bot/:/bot/
       - /bot/tests/:/bot/tests/
@@ -78,18 +81,19 @@ services:
     depends_on:
       - actions
     command: sh -c "make x"
-    env_file:
-      - env/auth.env
-      - env/servers.env
+    networks:
+      - bot-network
+
+  # ================================= Duckling  ==================================
   # Duckling HTTP extractor for entities such as email, date, amounts...
   duckling:
     container_name: duck
     image: "rasa/duckling"
-    networks:
-      - bot-network
     ports:
       - 6800:8000
-    
-networks: 
+    networks:
+      - bot-network
+
+networks:
   bot-network:
     driver: bridge
