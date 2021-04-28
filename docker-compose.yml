@@ -50,8 +50,8 @@ services:
   # ================================= Actions =================================
   # Rasa middleware used to connect with external APIs.
   actions:
-    <<: *bot-common
     <<: *bot-common-build
+    <<: *bot-common
     container_name: actions
     ports:
       - 5055:5055
@@ -60,7 +60,6 @@ services:
     command: sh -c "make actions"
     environment:
       JWT_SECRET: RRrWj+H2QEqV9O7iKBrU0zuB
-      EJ_HOST: https://ejplatform.pencillabs.com.br
     networks:
       - bot-network
 

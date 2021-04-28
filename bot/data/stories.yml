@@ -15,7 +15,7 @@ stories:
       - intent: start
       - action: action_set_channel_info
       - slot_was_set:
-        - current_channel_info: 'telegram_group'
+          - current_channel_info: "telegram_group"
       - action: utter_ask_group_participate
       - intent: start_group_interaction
       - action: action_setup_by_user_conversation
@@ -62,7 +62,7 @@ stories:
       - intent: start
       - action: action_set_channel_info
       - slot_was_set:
-        - current_channel_info: 'telegram_group'
+          - current_channel_info: "telegram_group"
       - action: utter_ask_group_participate
       - intent: disagree
       - action: utter_disagreed_participation

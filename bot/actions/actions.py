@@ -31,6 +31,7 @@ class ActionGetConversationTitle(Action):
         logger.debug(conversation_id)
         conversation_title = API.get_conversation_title(conversation_id)
         logger.debug(conversation_title)
+        logger.debug("INFO")
         return [
             SlotSet("conversation_title", conversation_title),
             SlotSet("conversation_id", conversation_id),
@@ -265,6 +266,9 @@ class ActionGetConversationId(Action):
             # this action is only ran in webchat (socketio) channels
             return [FollowupAction("utter_start")]
         bot_url = tracker.get_slot("url")
+        logger.debug("GET CONVERSATION ID")
+        logger.debug(bot_url)
+        logger.debug("GET CONVERSATION ID")
         try:
             conversation_info = API.get_conversation_info_by_url(bot_url)
         except EJCommunicationError:
@@ -290,7 +294,11 @@ class ActionSetChannelInfo(Action):
         return "action_set_channel_info"
 
     def run(self, dispatcher, tracker, domain):
+        logger.debug("SET CHANNEL INFO")
         logger.debug(tracker.latest_message["metadata"])
+        logger.debug(tracker.latest_message)
+        logger.debug(tracker.slots)
+        logger.debug("SET CHANNEL INFO")
         channel = tracker.get_latest_input_channel()
 
         if tracker.get_latest_input_channel() == "rocketchat":

@@ -1,39 +1,39 @@
-version: '2.0'
+version: "2.0"
 config:
   store_entities_as_slots: true
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
 intents:
-- agree:
-    use_entities: true
-- disagree:
-    use_entities: true
-- pass:
-    use_entities: true
-- start:
-    use_entities: true
-- email:
-    use_entities: true
-- out_of_context:
-    use_entities: true
-- invalid_email:
-    use_entities: true
-- stop:
-    use_entities: true
-- welcome:
-    use_entities: true
-- start_group_interaction:
-    use_entities: true
-- url:
-    use_entities: true
-- help:
-    use_entities: true
+  - agree:
+      use_entities: true
+  - disagree:
+      use_entities: true
+  - pass:
+      use_entities: true
+  - start:
+      use_entities: true
+  - email:
+      use_entities: true
+  - out_of_context:
+      use_entities: true
+  - invalid_email:
+      use_entities: true
+  - stop:
+      use_entities: true
+  - welcome:
+      use_entities: true
+  - start_group_interaction:
+      use_entities: true
+  - url:
+      use_entities: true
+  - help:
+      use_entities: true
 entities:
-- email
-- number
-- url
-- current_channel_info
+  - email
+  - number
+  - url
+  - current_channel_info
 slots:
   change_comment:
     type: rasa.shared.core.slots.BooleanSlot
@@ -89,10 +89,10 @@ slots:
     auto_fill: true
     influence_conversation: false
     values:
-    - concordar
-    - discordar
-    - pular
-    - parar
+      - concordar
+      - discordar
+      - pular
+      - parar
   conversation_title:
     type: rasa.shared.core.slots.TextSlot
     initial_value: null
@@ -112,87 +112,87 @@ slots:
     influence_conversation: false
 responses:
   utter_welcome:
-  - text: Olá,  Muito prazer, eu sou a Duda!
+    - text: Olá,  Muito prazer, eu sou a Duda!
   utter_start:
-  - text: Eu estava querendo saber a opinião de outras pessoas a respeito de {conversation_title}.
+    - text: Eu estava querendo saber a opinião de outras pessoas a respeito de {conversation_title}.
   utter_ask_user_particpate:
-  - text: Topa um bate-papo comigo?
+    - text: Topa um bate-papo comigo?
   utter_ask_group_participate:
-  - text: Vocês topam bater um papo comigo? A conversa pode ser selecionada a partir de /participar [id]
+    - text: Vocês topam bater um papo comigo? A conversa pode ser selecionada a partir de /participar [id]
   utter_agreed_participation:
-  - text: Ah maravilha 😄
-  - text: Eu agradeço muito!
+    - text: Ah maravilha 😄
+    - text: Eu agradeço muito!
   utter_disagreed_participation:
-  - text: Poooxa ☹️
-  - text: Ah que pena ☹️
+    - text: Poooxa ☹️
+    - text: Ah que pena ☹️
   utter_stop_conversation:
-  - text: Se você não quiser mais conversar comigo ou quiser terminar conversa é so me falar tá?!(é só escrever PARAR)
+    - text: Se você não quiser mais conversar comigo ou quiser terminar conversa é so me falar tá?!(é só escrever PARAR)
   utter_ask_email:
-  - text: Você se importa de me passar seu email?
+    - text: Você se importa de me passar seu email?
   utter_explain_ask_email:
-  - text: Eu juro que não vou mandar spam rs. É só uma forma de eu poder ligar você a sua opinião.
+    - text: Eu juro que não vou mandar spam rs. É só uma forma de eu poder ligar você a sua opinião.
   utter_email_is_optional:
-  - text: Ah e se você não quiser não tem problema, eu mantenho a sua identidade secreta 🤫 kkkk
+    - text: Ah e se você não quiser não tem problema, eu mantenho a sua identidade secreta 🤫 kkkk
   utter_send_email:
-  - text: Já pode mandar seu email aqui
+    - text: Já pode mandar seu email aqui
   utter_invalid_email:
-  - text: Hmmm acho que você escreveu alguma coisa errada 😕
+    - text: Hmmm acho que você escreveu alguma coisa errada 😕
   utter_ask_email_again:
-  - text: Pode enviar seu email de novo, por favor?
+    - text: Pode enviar seu email de novo, por favor?
   utter_got_email:
-  - text: Já anotei aqui o seu email, obrigada 😉
+    - text: Já anotei aqui o seu email, obrigada 😉
   utter_user_want_anonymous:
-  - text: Beleza, vamos prosseguir!
+    - text: Beleza, vamos prosseguir!
   utter_vote_received:
-  - text: Anotado!
-  - text: Beleza, anotei aqui.
-  - text: Entendo, registrado.
-  - channel: telegram
-    text: Anotei aqui {telegram_username}
+    - text: Anotado!
+    - text: Beleza, anotei aqui.
+    - text: Entendo, registrado.
+    - channel: telegram
+      text: Anotei aqui {telegram_username}
   utter_out_of_context:
-  - text: Desculpe, não sei se entendi 😕
+    - text: Desculpe, não sei se entendi 😕
   utter_sent_comment:
-  - text: Certo, já anotei seu comentário, muito obrigada pela sua contribuição!!
+    - text: Certo, já anotei seu comentário, muito obrigada pela sua contribuição!!
   utter_send_comment_error:
-  - text: Hmmm não sei o que aconteceu. \nEu não consegui salvar seu comentário
+    - text: Hmmm não sei o que aconteceu. \nEu não consegui salvar seu comentário
   utter_ask_send_comment_again:
-  - text: Faz assim, tenta me mandar ele novamente mais tarde, pode ser?!
+    - text: Faz assim, tenta me mandar ele novamente mais tarde, pode ser?!
   utter_voted_all_comments:
-  - text: Noossa 😮😮😮 Você opinou sobre todos os comentários que eu tinha aqui!
+    - text: Noossa 😮😮😮 Você opinou sobre todos os comentários que eu tinha aqui!
   utter_thanks_participation:
-  - text: Eu fico muito feliz por você ter participado 🤗!
-  - text: Muito obrigada pela sua participação 🤗🤗🤗
+    - text: Eu fico muito feliz por você ter participado 🤗!
+    - text: Muito obrigada pela sua participação 🤗🤗🤗
   utter_stopped:
-  - text: Só de você ter me respondido ja me ajudou, muito obrigada!
+    - text: Só de você ter me respondido ja me ajudou, muito obrigada!
   utter_next_conversation:
-  - text: Depois conversamos mais 😘
+    - text: Depois conversamos mais 😘
   utter_finish:
-  - text: Ah quando quiser trocar uma ideia é só me mandar um "Oi".
+    - text: Ah quando quiser trocar uma ideia é só me mandar um "Oi".
   utter_goodbye:
-  - text: Pode deixar que te mantenho por dentro sobre as novidades desse assunto
+    - text: Pode deixar que te mantenho por dentro sobre as novidades desse assunto
   utter_ej_communication_error:
-  - text: Opa, parece que não estou conseguindo acessar nosso servidor.
+    - text: Opa, parece que não estou conseguindo acessar nosso servidor.
   utter_error_try_again_later:
-  - text: Tive um problema técnico, por favor tente participar mais tarde.
+    - text: Tive um problema técnico, por favor tente participar mais tarde.
   utter_ej_connection_doesnt_exist:
-  - text: Esse site ainda não está conectado com a EJ. Entre em contato com os administradores dele.
+    - text: Esse site ainda não está conectado com a EJ. Entre em contato com os administradores dele.
   utter_help:
-  - text: A lista de comandos disponíveis atualmente é \n /participar [id] - Em um grupo de telegram, pode-se escolher a conversa para iniciar um debate, a partir do seu id.
+    - text: A lista de comandos disponíveis atualmente é \n /participar [id] - Em um grupo de telegram, pode-se escolher a conversa para iniciar um debate, a partir do seu id.
   utter_explain_no_button_participation:
-  - text: Para concordar com um comentário, digite 1. \n Para discordar de um comentário, digite -1. \n Caso queira pular um comentário, digite 0.
+    - text: Para concordar com um comentário, digite 1. \n Para discordar de um comentário, digite -1. \n Caso queira pular um comentário, digite 0.
   utter_explain_button_participation:
-  - text: Para concordar com um comentário, digite 1 ou clique no botão Concordar, para discordar de um comentário, digite -1 ou clique no botão Discordar. \n Caso queira pular um comentário, digite 0 ou clique no botão Pular.
+    - text: Para concordar com um comentário, digite 1 ou clique no botão Concordar, para discordar de um comentário, digite -1 ou clique no botão Discordar. \n Caso queira pular um comentário, digite 0 ou clique no botão Pular.
 actions:
-- action_get_conversation_title
-- action_setup_conversation
-- action_ask_vote
-- action_follow_up_form
-- validate_vote_form
-- action_setup_by_user_conversation
-- action_get_conversation_id
-- action_set_channel_info
+  - action_get_conversation_title
+  - action_setup_conversation
+  - action_ask_vote
+  - action_follow_up_form
+  - validate_vote_form
+  - action_setup_by_user_conversation
+  - action_get_conversation_id
+  - action_set_channel_info
 forms:
   vote_form:
     vote:
-    - type: from_text
+      - type: from_text
 e2e_actions: []

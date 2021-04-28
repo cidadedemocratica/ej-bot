@@ -16,11 +16,6 @@ rules:
       - active_loop: null
       - active_loop: action_restart
 
-  - rule: Welcome user
-    steps:
-      - intent: welcome
-      - action: utter_welcome
-
   - rule: Set conversation id for webchat
     steps:
       - intent: url
